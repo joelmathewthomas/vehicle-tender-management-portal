@@ -19,7 +19,9 @@ public class AuthServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		response.setContentType("text/plain");
+		response.getWriter().write("METHOD_NOT_ALLOWED");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +41,7 @@ public class AuthServlet extends HttpServlet {
 			session.setAttribute("userid", authBean.getUser_id());
 			session.setAttribute("username", authBean.getUsername());
 			session.setAttribute("userrole", authBean.getRole());
-			response.sendRedirect("admin/adminHome.jsp");
+			response.sendRedirect("admin");
 			return;
 		} else {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
