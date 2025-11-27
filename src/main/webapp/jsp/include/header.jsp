@@ -6,8 +6,12 @@
 	</div>
 
 	<nav class="nav-links">
-		<a href="#">Owners</a> <a href="#">Drivers</a> <a href="#">Vehicles</a>
-		<a href="#">Tenders</a> <a href="#">Reports</a> <a href="#"
-			class="logout">Logout</a>
+		<ul>
+			<a href="#">Home</a>
+			<a href="#">Services</a>
+			<a href="#">About</a>
+			<a href="#">Contact Us</a>
+			<a href="#" class="logout">Logout</a>
+		</ul>
 	</nav>
 </header>
