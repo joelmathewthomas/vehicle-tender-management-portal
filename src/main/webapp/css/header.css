@@ -1,0 +1,37 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Poppins", sans-serif;
+	box-sizing: border-box;
+}
+
+header {
+	position: fixed;
+	top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 99%;
+	padding: 14px 28px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border-radius: 16px;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.nav-links a {
+	margin: 0 12px;
+	text-decoration: none;
+	color: white;
+	transition: 0.2s ease;
+}
+
+.nav-links a:hover {
+	color: bisque;
+}
