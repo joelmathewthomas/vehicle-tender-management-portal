@@ -20,9 +20,6 @@
 <body>
 	<%@ include file="../jsp/include/header.jsp"%>
 	<div class="content">
-		<div class="nav-links">
-			<a href="${pageContext.request.contextPath}/admin/owner/add">Add Owner</a>
-		</div>
 	</div>
 </body>
 </html>

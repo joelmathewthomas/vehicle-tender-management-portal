@@ -6,12 +6,20 @@
 	</div>
 
 	<nav class="nav-links">
-		<ul>
-			<a href="#">Home</a>
-			<a href="#">Services</a>
-			<a href="#">About</a>
-			<a href="#">Contact Us</a>
-			<a href="#" class="logout">Logout</a>
-		</ul>
+		<a href="${pageContext.request.contextPath}/admin">Home</a>
+		<div class="dropdown">
+			<a href="#">Owners</a>
+			<div class="submenu">
+				<a href="${pageContext.request.contextPath}/admin/owner/add">Add New Owner</a> <a href="#">Edit/Delete</a>
+			</div>
+		</div>
+
+		<div class="dropdown">
+			<a href="#">Tenders</a>
+			<div class="submenu">
+				<a href="#">Add New Tender</a> <a href="#">Edit/Delete</a>
+			</div>
+		</div>
+		<a href="#" class="logout">Logout</a>
 	</nav>
 </header>
