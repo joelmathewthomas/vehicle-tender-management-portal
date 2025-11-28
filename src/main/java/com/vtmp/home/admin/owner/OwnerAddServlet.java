@@ -34,15 +34,8 @@ public class OwnerAddServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<String> errors = null;
-		OwnerBean ownerBean = new OwnerBean();
-		ownerBean.setUsername(request.getParameter("username"));
-		ownerBean.setPassword(request.getParameter("password"));
-		ownerBean.setFname(request.getParameter("fname"));
-		ownerBean.setMname(request.getParameter("mname"));
-		ownerBean.setLname(request.getParameter("lname"));
-		ownerBean.setPhone(request.getParameter("phone"));
-		ownerBean.setAddress(request.getParameter("address"));
-		ownerBean.setAadhaar(request.getParameter("aadhaar"));
+		OwnerBean ownerBean = OwnerService.mapRequestToOwner(request);
+		
 
 		// Validate Form
 		errors = OwnerService.validateForm(ownerBean);
@@ -52,7 +45,6 @@ public class OwnerAddServlet extends HttpServlet {
 			for (String error : errors) {
 				messages.append(error).append("\n");
 			}
-			response.getWriter().write(messages.toString());
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.setContentType("text/plain");
 			response.getWriter().write(messages.toString());
