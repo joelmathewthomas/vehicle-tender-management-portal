@@ -26,13 +26,14 @@ public class AuthServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		AuthDao dao = new AuthDao();
 		HttpSession session = request.getSession();
 		AuthBean authBean = new AuthBean();
 		authBean.setUsername(request.getParameter("username"));
 		authBean.setPassword(request.getParameter("password"));
 
 		try {
-			authBean = AuthDao.authenticate(authBean);
+			authBean = dao.authenticate(authBean);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

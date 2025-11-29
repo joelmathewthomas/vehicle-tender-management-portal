@@ -20,7 +20,7 @@ public class AuthDao {
 	 *         it fails
 	 * @throws SQLException if a database error occurs
 	 */
-	public static AuthBean authenticate(AuthBean authBean) throws SQLException {
+	public AuthBean authenticate(AuthBean authBean) throws SQLException {
 		String sql = "SELECT * FROM users WHERE user_name = ? AND user_password = ?";
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql);) {

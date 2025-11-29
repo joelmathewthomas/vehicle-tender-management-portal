@@ -28,7 +28,6 @@ public class LogoutServlet extends HttpServlet {
 			session.invalidate();
 		}
 
-		System.out.println("context path is " + request.getContextPath());
 		response.sendRedirect(request.getContextPath());
 	}
 

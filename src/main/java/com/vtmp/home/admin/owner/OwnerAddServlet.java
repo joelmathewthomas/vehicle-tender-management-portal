@@ -33,12 +33,16 @@ public class OwnerAddServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		OwnerService service = new OwnerService();
 		List<String> errors = null;
-		OwnerBean ownerBean = OwnerService.mapRequestToOwner(request);
-		
+		AuthBean authBean = new AuthBean();
+		authBean.setUsername(request.getParameter("username"));
+		authBean.setPassword(request.getParameter("password"));
+		authBean.setRole("owner");
+		OwnerBean ownerBean = service.mapRequestToOwner(request);
 
 		// Validate Form
-		errors = OwnerService.validateForm(ownerBean);
+		errors = service.validateForm(authBean, ownerBean);
 		if (!errors.isEmpty()) {
 			StringBuilder messages = new StringBuilder();
 			messages.append("Invalid FormData\n");
