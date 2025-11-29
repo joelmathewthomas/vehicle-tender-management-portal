@@ -1,9 +1,15 @@
 package com.vtmp.home.admin.owner;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.vtmp.auth.AuthBean;
+import com.vtmp.auth.AuthDao;
+import com.vtmp.util.DbDao;
 
 /**
  * Handles owner-related operations for the admin module. Currently provides
@@ -12,19 +18,23 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class OwnerService {
 
+	private AuthDao authDao = new AuthDao();
+	private OwnerDao ownerDao = new OwnerDao();
+
 	/**
 	 * Validates the fields of the given OwnerBean.
 	 *
-	 * @param ownerBean the data submitted from the form
+	 * @param authBean  the authentication details submitted from the form
+	 * @param ownerBean the owner details submitted from the form
 	 * @return a list of validation error messages (empty if valid)
 	 */
-	public static List<String> validateForm(OwnerBean ownerBean) {
+	public List<String> validateForm(AuthBean authBean, OwnerBean ownerBean) {
 		List<String> errors = new ArrayList<>();
 
-		if (ownerBean.getUsername() == null || !ownerBean.getUsername().matches("^[A-Za-z0-9_]+$")) {
+		if (authBean.getUsername() == null || !authBean.getUsername().matches("^[A-Za-z0-9_]+$")) {
 			errors.add("Invalid Username");
 		}
-		if (ownerBean.getPassword() == null || !ownerBean.getPassword().matches("^.{6,}$")) {
+		if (authBean.getPassword() == null || !authBean.getPassword().matches("^.{6,}$")) {
 			errors.add("Invalid Password");
 		}
 		if (ownerBean.getFname() == null || !ownerBean.getFname().matches("^[A-Za-z ]+$")) {
@@ -55,11 +65,9 @@ public class OwnerService {
 	 * @param request incoming HTTP form request
 	 * @return OwnerBean populated with request parameters
 	 */
-	public static OwnerBean mapRequestToOwner(HttpServletRequest request) {
+	public OwnerBean mapRequestToOwner(HttpServletRequest request) {
 		OwnerBean bean = new OwnerBean();
 
-		bean.setUsername(request.getParameter("username"));
-		bean.setPassword(request.getParameter("password"));
 		bean.setFname(request.getParameter("fname"));
 		bean.setMname(request.getParameter("mname"));
 		bean.setLname(request.getParameter("lname"));
@@ -68,6 +76,40 @@ public class OwnerService {
 		bean.setAadhaar(request.getParameter("aadhaar"));
 
 		return bean;
+	}
+
+	/**
+	 * Creates a new user and owner record.
+	 *
+	 * Inserts the user into the users table, retrieves the generated user_id,
+	 * assigns it to the owner, and then inserts the owner into the owners table.
+	 *
+	 * @param authBean  authentication details for the new user
+	 * @param ownerBean owner profile data
+	 * @return true if both inserts succeed, false otherwise
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean addOwner(AuthBean authBean, OwnerBean ownerBean) throws SQLException {
+
+		try (Connection conn = DbDao.getConnection()) {
+			conn.setAutoCommit(false);
+
+			int user_id = authDao.insertUser(conn, authBean);
+			if (user_id <= 0) {
+				conn.rollback();
+				return false;
+			}
+
+			ownerBean.setUser_id(user_id);
+
+			if (ownerDao.insertOwner(conn, ownerBean)) {
+				conn.commit();
+				return true;
+			} else {
+				conn.rollback();
+				return false;
+			}
+		}
 	}
 
 }

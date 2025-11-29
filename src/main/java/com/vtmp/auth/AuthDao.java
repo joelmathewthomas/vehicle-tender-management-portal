@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.vtmp.util.DbDao;
 
@@ -40,4 +41,35 @@ public class AuthDao {
 
 		}
 	}
+
+	/**
+	 * Inserts a new user and returns the generated user_id.
+	 *
+	 * @param conn Connection object
+	 * @param authBean user data to insert
+	 * @return generated user_id, or -1 if insert failed
+	 * @throws SQLException if a database error occurs
+	 */
+	public int insertUser(Connection conn, AuthBean authBean) throws SQLException {
+
+		String sql = "INSERT INTO `vtmp`.`users` (`user_name`, `user_password`, `user_role`) VALUES (?, ?, 'owner')";
+
+		try (PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+			pst.setString(1, authBean.getUsername());
+			pst.setString(2, authBean.getPassword());
+
+			if (pst.executeUpdate() == 0)
+				return -1;
+
+			try (ResultSet rs = pst.getGeneratedKeys()) {
+				if (rs.next()) {
+					return rs.getInt(1); // correct way
+				}
+			}
+		}
+
+		return -1;
+	}
+
 }

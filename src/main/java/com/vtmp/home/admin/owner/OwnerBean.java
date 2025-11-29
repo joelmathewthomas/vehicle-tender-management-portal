@@ -1,11 +1,10 @@
 package com.vtmp.home.admin.owner;
 
 /**
- * Bean class used for storing Owner details. 
+ * Bean class used for storing Owner details.
  */
 public class OwnerBean {
-	private String username;
-	private String password;
+	private int user_id;
 	private String fname;
 	private String mname;
 	private String lname;
@@ -13,20 +12,12 @@ public class OwnerBean {
 	private String address;
 	private String aadhaar;
 
-	public String getUsername() {
-		return username;
+	public int getUser_id() {
+		return user_id;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
 	}
 
 	public String getFname() {

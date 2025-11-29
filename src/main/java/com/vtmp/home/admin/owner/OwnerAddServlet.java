@@ -1,6 +1,8 @@
 package com.vtmp.home.admin.owner;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.vtmp.auth.AuthBean;
 
 /**
  * Servlet implementation class OwnerAdd
@@ -52,6 +56,37 @@ public class OwnerAddServlet extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.setContentType("text/plain");
 			response.getWriter().write(messages.toString());
+			return;
+		}
+
+		// Create new user
+		try {
+			if (service.addOwner(authBean, ownerBean)) {
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.setContentType("text/plain");
+				response.getWriter().write("New Owner Created");
+			} else {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setContentType("text/plain");
+				response.getWriter().write("Failed to create new owner!");
+			}
+		} catch (SQLIntegrityConstraintViolationException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setContentType("text/plain");
+			response.getWriter().write("Failed to create new owner! " + e.getMessage());
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setContentType("text/plain");
+			if (e.getMessage().contains("user_name")) {
+				response.getWriter().write("Username already exists.");
+			} else if (e.getMessage().contains("owner_phone")) {
+				response.getWriter().write("Phone number already exists.");
+			} else if (e.getMessage().contains("owner_aadhaar")) {
+				response.getWriter().write("Aadhaar already exists.");
+			} else {
+				response.getWriter().write("Database constraint error: " + e.getMessage());
+			}
+			e.printStackTrace();
 		}
 	}
 
