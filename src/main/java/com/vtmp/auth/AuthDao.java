@@ -22,7 +22,7 @@ public class AuthDao {
 	 * @throws SQLException if a database error occurs
 	 */
 	public AuthBean authenticate(AuthBean authBean) throws SQLException {
-		String sql = "SELECT * FROM users WHERE user_name = ? AND user_password = ?";
+		String sql = "SELECT * FROM users WHERE user_name = BINARY ? AND user_password = BINARY ?";
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql);) {
 			pst.setString(1, authBean.getUsername());
