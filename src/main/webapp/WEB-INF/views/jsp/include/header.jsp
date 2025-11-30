@@ -11,7 +11,7 @@
 	<nav class="nav-links">
 		<a href="${ctxPth}/admin">Home</a>
 		<div class="dropdown">
-			<a href="#">Owners</a>
+			<a href="${ctxPth}/admin/owner">Owners</a>
 			<div class="submenu">
 				<a href="${ctxPth}/admin/owner/add">Add New Owner</a> <a href="#">Edit/Delete</a>
 			</div>

@@ -4,6 +4,7 @@ package com.vtmp.home.admin.owner;
  * Bean class used for storing Owner details.
  */
 public class OwnerBean {
+	private int owner_id;
 	private int user_id;
 	private String fname;
 	private String mname;
@@ -11,6 +12,14 @@ public class OwnerBean {
 	private String phone;
 	private String address;
 	private String aadhaar;
+
+	public int getOwner_id() {
+		return owner_id;
+	}
+
+	public void setOwner_id(int owner_id) {
+		this.owner_id = owner_id;
+	}
 
 	public int getUser_id() {
 		return user_id;
