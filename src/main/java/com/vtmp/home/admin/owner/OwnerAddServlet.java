@@ -61,10 +61,9 @@ public class OwnerAddServlet extends HttpServlet {
 
 		// Create new user
 		try {
-			if (service.addOwner(authBean, ownerBean)) {
-				response.setStatus(HttpServletResponse.SC_OK);
-				response.setContentType("text/plain");
-				response.getWriter().write("New Owner Created");
+			int user_id = service.addOwner(authBean, ownerBean);
+			if (user_id != -1) {
+				response.sendRedirect(request.getContextPath() + "/admin/owner#r" + user_id);
 			} else {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.setContentType("text/plain");

@@ -86,10 +86,10 @@ public class OwnerService {
 	 *
 	 * @param authBean  authentication details for the new user
 	 * @param ownerBean owner profile data
-	 * @return true if both inserts succeed, false otherwise
+	 * @return user_id if transaction is successful, else -1
 	 * @throws SQLException if a database error occurs
 	 */
-	public boolean addOwner(AuthBean authBean, OwnerBean ownerBean) throws SQLException {
+	public int addOwner(AuthBean authBean, OwnerBean ownerBean) throws SQLException {
 
 		try (Connection conn = DbDao.getConnection()) {
 			conn.setAutoCommit(false);
@@ -97,17 +97,17 @@ public class OwnerService {
 			int user_id = authDao.insertUser(conn, authBean);
 			if (user_id <= 0) {
 				conn.rollback();
-				return false;
+				return -1;
 			}
 
 			ownerBean.setUser_id(user_id);
 
 			if (ownerDao.insertOwner(conn, ownerBean)) {
 				conn.commit();
-				return true;
+				return user_id;
 			} else {
 				conn.rollback();
-				return false;
+				return -1;
 			}
 		}
 	}
