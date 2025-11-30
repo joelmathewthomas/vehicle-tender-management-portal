@@ -11,15 +11,16 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/header.css" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/adminHome.css" />
+	href="${pageContext.request.contextPath}/css/content.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
 	rel="stylesheet" />
 </head>
 
 <body>
-	<%@ include file="../jsp/include/header.jsp"%>
-	<div class="content">
+	<div id="root">
+		<%@ include file="../jsp/include/header.jsp"%>
+		<div class="content"></div>
 	</div>
 </body>
 </html>

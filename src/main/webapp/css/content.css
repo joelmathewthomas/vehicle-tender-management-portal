@@ -1,0 +1,14 @@
+.content {
+  flex: 1;
+  background-color: #009576;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.content.top {
+  align-items: flex-start;
+  padding-top: 40px;
+}
