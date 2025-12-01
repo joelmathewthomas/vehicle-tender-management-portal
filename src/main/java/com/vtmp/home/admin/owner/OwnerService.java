@@ -22,7 +22,7 @@ public class OwnerService {
 	private OwnerDao ownerDao = new OwnerDao();
 
 	/**
-	 * Validates the fields of the given OwnerBean.
+	 * Validates the fields of the given OwnerBean and AuthBean.
 	 *
 	 * @param authBean  the authentication details submitted from the form
 	 * @param ownerBean the owner details submitted from the form
@@ -37,6 +37,37 @@ public class OwnerService {
 		if (authBean.getPassword() == null || !authBean.getPassword().matches("^.{6,}$")) {
 			errors.add("Invalid Password");
 		}
+		if (ownerBean.getFname() == null || !ownerBean.getFname().matches("^[A-Za-z ]+$")) {
+			errors.add("Invalid First Name");
+		}
+		if (ownerBean.getMname() == null || !ownerBean.getMname().matches("^[A-Za-z ]*$")) {
+			errors.add("Invalid Middle Name");
+		}
+		if (ownerBean.getLname() == null || !ownerBean.getLname().matches("^[A-Za-z ]+$")) {
+			errors.add("Invalid Last Name");
+		}
+		if (ownerBean.getPhone() == null || !ownerBean.getPhone().matches("^[0-9]{10}$")) {
+			errors.add("Invalid Phone Number");
+		}
+		if (ownerBean.getAddress() == null || !ownerBean.getAddress().matches("^.{3,}$")) {
+			errors.add("Invalid Address");
+		}
+		if (ownerBean.getAadhaar() == null || !ownerBean.getAadhaar().matches("^[0-9]{12}$")) {
+			errors.add("Invalid Aadhaar");
+		}
+
+		return errors;
+	}
+
+	/**
+	 * Validates only OwnerBean fields
+	 *
+	 * @param ownerBean owner details from the form
+	 * @return list of validation errors (empty if valid)
+	 */
+	public List<String> validateForm(OwnerBean ownerBean) {
+		List<String> errors = new ArrayList<>();
+
 		if (ownerBean.getFname() == null || !ownerBean.getFname().matches("^[A-Za-z ]+$")) {
 			errors.add("Invalid First Name");
 		}
@@ -133,6 +164,20 @@ public class OwnerService {
 				return -1;
 			}
 		}
+	}
+
+	/**
+	 * Updates an existing owner record.
+	 *
+	 * This method simply delegates the update operation to the DAO layer and
+	 * returns whether the update was successful.
+	 *
+	 * @param ownerBean the owner data to update, including the owner_id
+	 * @return true if the record was updated, false otherwise
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean updateOwner(OwnerBean ownerBean) throws SQLException {
+		return ownerDao.updateOwner(ownerBean);
 	}
 
 }

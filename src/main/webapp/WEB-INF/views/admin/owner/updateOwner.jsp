@@ -39,8 +39,8 @@
 						<label>Enter Owner ID</label>
 						<div id="user" class="input">
 							<div>
-								<input type="text" name="oid" placeholder="Owner ID"
-									required minlength="1" maxlength="20" pattern="[0-9]{1,20}"
+								<input type="text" name="oid" placeholder="Owner ID" required
+									minlength="1" maxlength="20" pattern="[0-9]{1,20}"
 									title="Enter a valid Owner ID." />
 							</div>
 						</div>
@@ -79,6 +79,9 @@
 						<label>Name</label>
 						<div id="name" class="input">
 							<div>
+								<input type="text" name="owner_id" value="<%= request.getParameter("oid") %>" required
+									minlength="1" maxlength="20" pattern="[0-9]{1,20}" hidden />
+
 								<input type="text" name="fname" placeholder="First Name"
 									value="<%=owner.getFname()%>" required
 									pattern="[A-Za-z ]{2,30}" title="Only letters allowed." />
@@ -115,7 +118,7 @@
 								<input type="text" name="aadhaar" placeholder="Aadhaar"
 									value="<%=owner.getAadhaar()%>" required pattern="\d{12}"
 									maxlength="12" title="Enter a 12-digit Aadhaar number."
-									disabled />
+									readonly />
 							</div>
 						</div>
 					</div>

@@ -111,4 +111,39 @@ public class OwnerDao {
 
 		return -1;
 	}
+
+	/**
+	 * Updates an existing owner record in the database.
+	 *
+	 * Fields such as first name, middle name, last name, phone, and address are
+	 * updated using values from the provided OwnerBean. The middle name is stored
+	 * as NULL if it is missing or empty.
+	 *
+	 * @param ownerBean contains the updated owner details and the owner_id to
+	 *                  update
+	 * @return true if exactly one row was updated, false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean updateOwner(OwnerBean ownerBean) throws SQLException {
+		String sql = "UPDATE `vtmp`.`owners` SET `owner_fname` = ?, `owner_mname` = ?, `owner_lname` = ?, `owner_phone` = ?, `owner_address` = ? WHERE `owner_id` = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setString(1, ownerBean.getFname());
+
+			if (ownerBean.getMname() == null || ownerBean.getMname().isEmpty()) {
+				pst.setNull(2, java.sql.Types.VARCHAR);
+			} else {
+				pst.setString(2, ownerBean.getMname().trim());
+			}
+
+			pst.setString(3, ownerBean.getLname());
+			pst.setString(4, ownerBean.getPhone());
+			pst.setString(5, ownerBean.getAddress());
+			pst.setInt(6, ownerBean.getOwner_id());
+
+			return pst.executeUpdate() == 1;
+		}
+	}
+
 }
