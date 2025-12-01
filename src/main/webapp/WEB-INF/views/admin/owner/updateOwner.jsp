@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.vtmp.auth.AuthBean"%>
-<%@ page import="com.vtmp.home.admin.owner.OwnerDetails"%>
+<%@ page import="com.vtmp.home.admin.owner.dto.OwnerDetails"%>
 <%@ page import="com.vtmp.home.admin.owner.OwnerBean"%>
 
 <!DOCTYPE html>

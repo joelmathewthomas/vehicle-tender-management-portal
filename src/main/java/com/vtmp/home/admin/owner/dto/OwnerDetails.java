@@ -1,6 +1,7 @@
-package com.vtmp.home.admin.owner;
+package com.vtmp.home.admin.owner.dto;
 
 import com.vtmp.auth.AuthBean;
+import com.vtmp.home.admin.owner.OwnerBean;
 
 /**
  * A simple wrapper that holds both owner information and the associated user
