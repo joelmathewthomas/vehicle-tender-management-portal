@@ -56,7 +56,7 @@
 								<td><%=o.getAadhaar()%></td>
 								<td><a
 									href="${ctxPth}/admin/owner/edit?oid=<%= o.getOwner_id() %>">Edit</a>
-									<a
+									<a class="delete"
 									href="${ctxPth}/admin/owner/delete?oid=<%= o.getOwner_id() %>">Delete</a></td>
 							</tr>
 							<%

@@ -69,10 +69,15 @@ tbody tr a {
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.15s ease, background-color 0.15s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 tbody tr a:hover {
   transform: scale(1.05);
   background-color: #0ab08f;
+}
+
+.delete:hover {
+  transform: scale(1.05);
+  background-color: #f76f6f;
 }
