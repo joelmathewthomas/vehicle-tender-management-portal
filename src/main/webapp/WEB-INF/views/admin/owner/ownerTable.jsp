@@ -36,6 +36,7 @@
 								<th>Phone</th>
 								<th>Address</th>
 								<th>Aadhaar</th>
+								<th>Actions</th>
 							</tr>
 						</thead>
 
@@ -53,6 +54,10 @@
 								<td><%=o.getPhone()%></td>
 								<td><%=o.getAddress()%></td>
 								<td><%=o.getAadhaar()%></td>
+								<td><a
+									href="${ctxPth}/admin/owner/edit?oid=<%= o.getOwner_id() %>">Edit</a>
+									<a
+									href="${ctxPth}/admin/owner/delete?oid=<%= o.getOwner_id() %>">Delete</a></td>
 							</tr>
 							<%
 							}

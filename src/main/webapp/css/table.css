@@ -54,3 +54,23 @@ tbody tr:hover, tbody tr:target {
 .table-container h2 {
 	margin-bottom: 12px;
 }
+
+tbody tr a {
+  display: inline-flex;
+  background-color: #0cc19d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin: 4px;
+  padding: 5px 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+tbody tr a:hover {
+  transform: scale(1.05);
+  background-color: #0ab08f;
+}
