@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +49,13 @@ public class OwnerDao {
 	 *
 	 * @param conn      Connection object
 	 * @param ownerBean data for the owner to insert
-	 * @return true if the insert was successful, false otherwise
+	 * @return owner_id if the insert was successful, -1 otherwise
 	 * @throws SQLException if a database error occurs
 	 */
-	public boolean insertOwner(Connection conn, OwnerBean ownerBean) throws SQLException {
+	public int insertOwner(Connection conn, OwnerBean ownerBean) throws SQLException {
 		String sql = "INSERT INTO `vtmp`.`owners` (`user_id`, `owner_fname`, `owner_mname`, `owner_lname`, `owner_phone`, `owner_address`, `owner_aadhaar`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-		try (PreparedStatement pst = conn.prepareStatement(sql)) {
+		try (PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			pst.setInt(1, ownerBean.getUser_id());
 			pst.setString(2, ownerBean.getFname());
@@ -64,7 +65,16 @@ public class OwnerDao {
 			pst.setString(6, ownerBean.getAddress());
 			pst.setString(7, ownerBean.getAadhaar());
 
-			return pst.executeUpdate() == 1;
+			if (pst.executeUpdate() == 0)
+				return -1;
+
+			try (ResultSet rs = pst.getGeneratedKeys()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
 		}
+
+		return -1;
 	}
 }

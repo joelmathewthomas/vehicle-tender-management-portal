@@ -46,7 +46,7 @@
 							if (ownersList != null) {
 								for (OwnerBean o : ownersList) {
 							%>
-							<tr id="<%="r" + o.getUser_id()%>">
+							<tr id="<%="r" + o.getOwner_id()%>">
 								<td><%=o.getOwner_id()%></td>
 								<td><%=o.getFname() + " " + ((o.getMname() != null && !o.getMname().isEmpty()) ? o.getMname() + " " : "")
 		+ o.getLname()%></td>

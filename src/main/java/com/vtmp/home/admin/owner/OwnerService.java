@@ -86,7 +86,7 @@ public class OwnerService {
 	 *
 	 * @param authBean  authentication details for the new user
 	 * @param ownerBean owner profile data
-	 * @return user_id if transaction is successful, else -1
+	 * @return owner_id if transaction is successful, else -1
 	 * @throws SQLException if a database error occurs
 	 */
 	public int addOwner(AuthBean authBean, OwnerBean ownerBean) throws SQLException {
@@ -102,9 +102,10 @@ public class OwnerService {
 
 			ownerBean.setUser_id(user_id);
 
-			if (ownerDao.insertOwner(conn, ownerBean)) {
+			int owner_id = ownerDao.insertOwner(conn, ownerBean);
+			if (owner_id != -1) {
 				conn.commit();
-				return user_id;
+				return owner_id;
 			} else {
 				conn.rollback();
 				return -1;

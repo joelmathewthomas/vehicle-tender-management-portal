@@ -64,7 +64,7 @@ public class AuthDao {
 
 			try (ResultSet rs = pst.getGeneratedKeys()) {
 				if (rs.next()) {
-					return rs.getInt(1); // correct way
+					return rs.getInt(1);
 				}
 			}
 		}
