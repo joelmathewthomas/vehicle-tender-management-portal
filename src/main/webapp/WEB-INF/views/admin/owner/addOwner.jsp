@@ -23,7 +23,7 @@
 	<div id="root">
 		<%@ include file="../../jsp/include/header.jsp"%>
 		<div class="content">
-			<div id="addOwner">
+			<div id="ownerForm">
 				<form action="${pageContext.request.contextPath}/admin/owner/add"
 					method="POST">
 					<div class="heading">

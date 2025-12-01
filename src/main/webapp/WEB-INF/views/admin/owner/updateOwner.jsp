@@ -29,7 +29,7 @@
 			<%
 			if (request.getParameter("oid") == null || request.getAttribute("ownerInfo") == null) {
 			%>
-			<div id="addOwner">
+			<div id="ownerForm">
 				<form action="${pageContext.request.contextPath}/admin/owner/edit"
 					method="GET">
 					<div class="heading">
@@ -57,7 +57,7 @@
 			OwnerBean owner = ownerDetails.getOwner();
 			%>
 
-			<div id="addOwner">
+			<div id="ownerForm">
 				<form action="${pageContext.request.contextPath}/admin/owner/edit"
 					method="POST">
 					<div class="heading">
