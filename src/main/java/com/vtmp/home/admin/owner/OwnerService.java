@@ -110,6 +110,16 @@ public class OwnerService {
 	}
 
 	/**
+	 * Retrieves all owners from the database.
+	 *
+	 * @return a list of OwnerBean objects
+	 * @throws SQLException if a database access error occurs
+	 */
+	public List<OwnerBean> getAllOwners() throws SQLException {
+		return ownerDao.getOwners();
+	}
+
+	/**
 	 * Retrieves both owner information and its associated user account.
 	 *
 	 * @param ownerId the owner_id to look up

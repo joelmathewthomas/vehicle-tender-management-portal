@@ -24,10 +24,10 @@ public class OwnerTableServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		OwnerDao dao = new OwnerDao();
+		OwnerService service = new OwnerService();
 
 		try {
-			List<OwnerBean> owners = dao.getOwners();
+			List<OwnerBean> owners = service.getAllOwners();
 			request.setAttribute("owners", owners);
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
