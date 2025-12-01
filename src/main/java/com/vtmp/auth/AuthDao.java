@@ -43,9 +43,35 @@ public class AuthDao {
 	}
 
 	/**
+	 * Fetches a user by its user_id.
+	 *
+	 * @param user_id the ID of the user to retrieve
+	 * @return an AuthBean if found, or null if not found
+	 * @throws SQLException if a database error occurs
+	 */
+	public AuthBean getUserById(int user_id) throws SQLException {
+		String sql = "SELECT * FROM vtmp.users WHERE user_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setInt(1, user_id);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					AuthBean user = new AuthBean();
+					user.setUsername(rs.getString("user_name"));
+					return user;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Inserts a new user and returns the generated user_id.
 	 *
-	 * @param conn Connection object
+	 * @param conn     Connection object
 	 * @param authBean user data to insert
 	 * @return generated user_id, or -1 if insert failed
 	 * @throws SQLException if a database error occurs

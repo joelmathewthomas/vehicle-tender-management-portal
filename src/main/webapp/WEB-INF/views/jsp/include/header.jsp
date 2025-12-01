@@ -13,7 +13,7 @@
 		<div class="dropdown">
 			<a href="${ctxPth}/admin/owner">Owners</a>
 			<div class="submenu">
-				<a href="${ctxPth}/admin/owner/add">Add New Owner</a> <a href="#">Edit/Delete</a>
+				<a href="${ctxPth}/admin/owner/add">Add New Owner</a> <a href="${ctxPth}/admin/owner/edit">Update Owner Details</a>
 			</div>
 		</div>
 

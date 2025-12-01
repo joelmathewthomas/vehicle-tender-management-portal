@@ -79,6 +79,28 @@ public class OwnerService {
 	}
 
 	/**
+	 * Retrieves both owner information and its associated user account.
+	 *
+	 * @param ownerId the owner_id to look up
+	 * @return OwnerDetails containing OwnerBean and AuthBean, or null if not found
+	 * @throws SQLException if a database error occurs
+	 */
+	public OwnerDetails getOwnerDetails(int ownerId) throws SQLException {
+
+		OwnerBean owner = ownerDao.getOwnerById(ownerId);
+		if (owner == null) {
+			return null;
+		}
+
+		AuthBean user = authDao.getUserById(owner.getUser_id());
+		if (user == null) {
+			return null;
+		}
+
+		return new OwnerDetails(owner, user);
+	}
+
+	/**
 	 * Creates a new user and owner record.
 	 *
 	 * Inserts the user into the users table, retrieves the generated user_id,
