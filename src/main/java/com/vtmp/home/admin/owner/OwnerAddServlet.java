@@ -72,10 +72,6 @@ public class OwnerAddServlet extends HttpServlet {
 		} catch (SQLIntegrityConstraintViolationException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.setContentType("text/plain");
-			response.getWriter().write("Failed to create new owner! " + e.getMessage());
-		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
 			if (e.getMessage().contains("user_name")) {
 				response.getWriter().write("Username already exists.");
 			} else if (e.getMessage().contains("owner_phone")) {
@@ -85,6 +81,10 @@ public class OwnerAddServlet extends HttpServlet {
 			} else {
 				response.getWriter().write("Database constraint error: " + e.getMessage());
 			}
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setContentType("text/plain");
+			response.getWriter().write("Failed to create new owner! " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
