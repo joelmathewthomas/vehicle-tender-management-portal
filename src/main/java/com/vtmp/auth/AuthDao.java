@@ -59,7 +59,9 @@ public class AuthDao {
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
 					AuthBean user = new AuthBean();
+					user.setUser_id(rs.getInt("user_id"));
 					user.setUsername(rs.getString("user_name"));
+					user.setRole(rs.getString("user_role"));
 					return user;
 				}
 			}
@@ -96,6 +98,30 @@ public class AuthDao {
 		}
 
 		return -1;
+	}
+
+	/**
+	 * Deletes a user from the database.
+	 *
+	 * <p>
+	 * This removes the row with the given user_id from the `users` table. If
+	 * foreign keys are configured with ON DELETE CASCADE, any related owner records
+	 * will be deleted automatically.
+	 * </p>
+	 *
+	 * @param user_id the ID of the user to delete
+	 * @return true if one row was removed, false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean deleteUser(int user_id) throws SQLException {
+		String sql = "DELETE FROM `vtmp`.`users` WHERE user_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql);) {
+
+			pst.setInt(1, user_id);
+			return pst.executeUpdate() == 1;
+
+		}
 	}
 
 }

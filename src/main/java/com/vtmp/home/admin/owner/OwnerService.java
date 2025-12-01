@@ -191,4 +191,26 @@ public class OwnerService {
 		return ownerDao.updateOwner(ownerBean);
 	}
 
+	/**
+	 * Deletes an owner and their associated user account.
+	 *
+	 * <p>
+	 * The method first loads the owner and its linked user record. If both exist,
+	 * it deletes the user. With ON DELETE CASCADE configured, the owner's row is
+	 * removed automatically.
+	 * </p>
+	 *
+	 * @param ownerId the owner_id to delete
+	 * @return true if the user (and therefore owner) was deleted, false otherwise
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean deleteOwner(int ownerId) throws SQLException {
+		OwnerBean owner = ownerDao.getOwnerById(ownerId);
+		if (owner == null) {
+			return false;
+		}
+
+		return authDao.deleteUser(owner.getUser_id());
+	}
+
 }
