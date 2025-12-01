@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class OwnerTable
  */
 @WebServlet("/admin/owner")
-public class OwnerTable extends HttpServlet {
+public class OwnerTableServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
