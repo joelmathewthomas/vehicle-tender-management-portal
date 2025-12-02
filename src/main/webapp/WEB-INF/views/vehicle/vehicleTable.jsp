@@ -51,7 +51,7 @@
 							<%
 							List<VehicleBean> vehiclesList = (List<VehicleBean>) request.getAttribute("vehicles");
 
-							if (vehiclesList != null) {
+							if (!vehiclesList.isEmpty()) {
 								for (VehicleBean v : vehiclesList) {
 							%>
 							<tr id="<%="r" + v.getOwner_id()%>">
@@ -79,7 +79,7 @@
 							} else {
 							%>
 							<tr>
-								<td colspan="4" style="text-align: center;">No vehicles
+								<td colspan="5" style="text-align: center;">No vehicles
 									found.</td>
 							</tr>
 							<%

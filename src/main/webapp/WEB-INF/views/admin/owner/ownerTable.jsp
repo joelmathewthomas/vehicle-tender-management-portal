@@ -44,7 +44,7 @@
 							<%
 							List<OwnerBean> ownersList = (List<OwnerBean>) request.getAttribute("owners");
 
-							if (ownersList != null) {
+							if (ownersList.isEmpty()) {
 								for (OwnerBean o : ownersList) {
 							%>
 							<tr id="<%="r" + o.getOwner_id()%>">
@@ -64,7 +64,7 @@
 							} else {
 							%>
 							<tr>
-								<td colspan="4" style="text-align: center;">No owners
+								<td colspan="6" style="text-align: center;">No owners
 									found.</td>
 							</tr>
 							<%
