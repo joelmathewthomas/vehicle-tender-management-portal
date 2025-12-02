@@ -51,7 +51,7 @@
 							<%
 							List<VehicleBean> vehiclesList = (List<VehicleBean>) request.getAttribute("vehicles");
 
-							if (!vehiclesList.isEmpty()) {
+							if (vehiclesList != null && !vehiclesList.isEmpty()) {
 								for (VehicleBean v : vehiclesList) {
 							%>
 							<tr id="<%="r" + v.getOwner_id()%>">
@@ -66,11 +66,35 @@
 								%>
 
 								<td><%=v.getVehicle_no()%></td>
-								<td><%=v.getVehicle_type().substring(0,1).toUpperCase() + v.getVehicle_type().substring(1)%></td>
-								<td><%=v.getVehicle_status().substring(0,1).toUpperCase() + v.getVehicle_status().substring(1)%></td>
-								<td><a
-									href="${ctxPth}/vehicle/edit?vid=<%= v.getVehicle_id() %>">Edit</a>
-									<a class="delete"
+
+								<td><%=v.getVehicle_type().substring(0, 1).toUpperCase() + v.getVehicle_type().substring(1)%></td>
+								<%
+								if (role.equals("owner")) {
+								%>
+								<td><%=v.getVehicle_status().substring(0, 1).toUpperCase() + v.getVehicle_status().substring(1)%></td>
+
+								<%
+								} else if (role.equals("admin")) {
+								%>
+								<td>
+									<%
+									if (v.getVehicle_status().equals("unapproved")) {
+									%> <a class="unapproved" title="Click to approve"
+									href="${ctxPth}/vehicle/edit?vid=<%= v.getVehicle_id() %>">Unapproved</a>
+									<%
+									} else if (v.getVehicle_status().equals("approved")) {
+									%> <a class="approved" title="Click to unapprove"
+									href="${ctxPth}/vehicle/edit?vid=<%= v.getVehicle_id() %>">Approved</a>
+									<%
+									}
+									%>
+								</td>
+								<%
+								}
+								%>
+
+
+								<td><a class="delete"
 									href="${ctxPth}/vehicle/delete?vid=<%= v.getVehicle_id() %>">Delete</a>
 								</td>
 							</tr>
@@ -86,6 +110,7 @@
 							}
 							%>
 						</tbody>
+
 					</table>
 				</div>
 			</div>
