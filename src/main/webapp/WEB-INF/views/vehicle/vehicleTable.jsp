@@ -40,6 +40,7 @@
 								<%
 								}
 								%>
+
 								<th>Vehicle Number</th>
 								<th>Vehicle Type</th>
 								<th>Vehicle Status</th>
@@ -51,9 +52,17 @@
 							<%
 							List<VehicleBean> vehiclesList = (List<VehicleBean>) request.getAttribute("vehicles");
 
+							String sParam = request.getParameter("s");
+							boolean showNormal = (sParam == null || "0".equals(sParam));
+
 							if (vehiclesList != null && !vehiclesList.isEmpty()) {
+
 								for (VehicleBean v : vehiclesList) {
+									boolean showFiltered = (sParam != null && v.getVehicle_status().equals("unapproved"));
+
+									if (showNormal || showFiltered) {
 							%>
+
 							<tr id="<%="r" + v.getVehicle_id()%>">
 								<td><%=v.getVehicle_id()%></td>
 
@@ -68,44 +77,51 @@
 								<td><%=v.getVehicle_no()%></td>
 
 								<td><%=v.getVehicle_type().substring(0, 1).toUpperCase() + v.getVehicle_type().substring(1)%></td>
+
 								<%
 								if (role.equals("owner")) {
 								%>
+
 								<td><%=v.getVehicle_status().substring(0, 1).toUpperCase() + v.getVehicle_status().substring(1)%></td>
 
 								<%
 								} else if (role.equals("admin")) {
 								%>
+
 								<td>
 									<%
 									if (v.getVehicle_status().equals("unapproved")) {
 									%> <a class="unapproved" title="Click to approve"
-									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">Unapproved</a>
-									<%
-									} else if (v.getVehicle_status().equals("approved")) {
-									%> <a class="approved" title="Click to unapprove"
-									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">Approved</a>
-									<%
-									}
-									%>
+									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">
+										Unapproved</a> <%
+ } else if (v.getVehicle_status().equals("approved")) {
+ %> <a class="approved" title="Click to unapprove"
+									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">
+										Approved</a> <%
+ }
+ %>
 								</td>
+
 								<%
 								}
 								%>
 
-
 								<td><a class="delete"
-									href="${ctxPth}/vehicle/delete?vid=<%= v.getVehicle_id() %>">Delete</a>
-								</td>
+									href="${ctxPth}/vehicle/delete?vid=<%= v.getVehicle_id() %>">
+										Delete</a></td>
 							</tr>
+
 							<%
+							}
 							}
 							} else {
 							%>
+
 							<tr>
 								<td colspan="5" style="text-align: center;">No vehicles
 									found.</td>
 							</tr>
+
 							<%
 							}
 							%>
@@ -118,3 +134,4 @@
 	</div>
 </body>
 </html>
+

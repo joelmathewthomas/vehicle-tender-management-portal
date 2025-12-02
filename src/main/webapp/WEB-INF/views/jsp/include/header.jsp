@@ -31,8 +31,9 @@ String role = (String) session.getAttribute("userrole");
 			<a href="${ctxPth}/vehicle">Vehicles</a>
 			<div class="submenu">
 				<a href="${ctxPth}/vehicle/add">Add New Vehicle</a> <a
-					href="${ctxPth}/vehicle/edit">Update Vehicle Details</a> <a
-					href="${ctxPth}/vehicle/delete">Delete Vehicle</a>
+					<% if (role.equals("admin")) { %> href="${ctxPth}/vehicle?s=1">Approve
+					Vehicles</a> <a <% } %> href="${ctxPth}/vehicle/delete">Delete
+					Vehicle</a>
 			</div>
 		</div>
 
