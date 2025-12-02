@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%
 pageContext.setAttribute("ctxPth", request.getContextPath());
+String role = (String) session.getAttribute("userrole");
 %>
 <header>
 	<div>
@@ -10,6 +11,10 @@ pageContext.setAttribute("ctxPth", request.getContextPath());
 
 	<nav class="nav-links">
 		<a href="${ctxPth}/admin">Home</a>
+
+		<%
+		if (role.equals("admin")) {
+		%>
 		<div class="dropdown">
 			<a href="${ctxPth}/admin/owner">Owners</a>
 			<div class="submenu">
@@ -18,6 +23,9 @@ pageContext.setAttribute("ctxPth", request.getContextPath());
 					href="${ctxPth}/admin/owner/delete">Delete Owner</a>
 			</div>
 		</div>
+		<%
+		}
+		%>
 
 		<div class="dropdown">
 			<a href="#">Tenders</a>

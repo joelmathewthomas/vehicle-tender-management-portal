@@ -1,4 +1,4 @@
-package com.vtmp.home.admin;
+package com.vtmp.home.owner;
 
 import java.io.IOException;
 
@@ -15,29 +15,29 @@ import javax.servlet.http.HttpServletResponse;
 import com.vtmp.util.Auth;
 
 /**
- * Servlet Filter implementation class AdminFilter
+ * Servlet Filter implementation class OwnerFilter
  */
-@WebFilter("/admin/*")
-public class AdminFilter extends HttpFilter implements Filter {
+@WebFilter("/owner/*")
+public class OwnerFilter extends HttpFilter implements Filter {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
-		if (!Auth.checkSession(req.getSession(false), "admin")) {
+		if (!Auth.checkSession(req.getSession(false), "owner")) {
 			res.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			res.setContentType("text/plain");
 			res.getWriter().write("Forbidden");
 			return;
 		} else {
+
 			chain.doFilter(request, response);
 		}
 	}

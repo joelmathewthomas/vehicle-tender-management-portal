@@ -42,7 +42,11 @@ public class AuthServlet extends HttpServlet {
 			session.setAttribute("userid", authBean.getUser_id());
 			session.setAttribute("username", authBean.getUsername());
 			session.setAttribute("userrole", authBean.getRole());
-			response.sendRedirect("admin");
+			if (authBean.getRole().equals("admin")) {
+				response.sendRedirect("admin");
+			} else if (authBean.getRole().equals("owner")) {
+				response.sendRedirect("owner");
+			}
 			return;
 		} else {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
