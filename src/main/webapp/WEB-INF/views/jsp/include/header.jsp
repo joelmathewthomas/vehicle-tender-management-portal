@@ -10,7 +10,17 @@ String role = (String) session.getAttribute("userrole");
 	</div>
 
 	<nav class="nav-links">
+		<%
+		if (role.equals("admin")) {
+		%>
 		<a href="${ctxPth}/admin">Home</a>
+		<%
+		} else if (role.equals("owner")) {
+		%>
+		<a href="${ctxPth}/owner">Home</a>
+		<%
+		}
+		%>
 
 		<%
 		if (role.equals("admin")) {
