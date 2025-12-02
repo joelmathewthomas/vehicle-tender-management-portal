@@ -55,12 +55,16 @@
 							String sParam = request.getParameter("s");
 							boolean showNormal = (sParam == null || "0".equals(sParam));
 
+							boolean anyRowPrinted = false;
+
 							if (vehiclesList != null && !vehiclesList.isEmpty()) {
 
 								for (VehicleBean v : vehiclesList) {
+
 									boolean showFiltered = (sParam != null && v.getVehicle_status().equals("unapproved"));
 
 									if (showNormal || showFiltered) {
+								anyRowPrinted = true;
 							%>
 
 							<tr id="<%="r" + v.getVehicle_id()%>">
@@ -94,7 +98,7 @@
 									%> <a class="unapproved" title="Click to approve"
 									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">
 										Unapproved</a> <%
- } else if (v.getVehicle_status().equals("approved")) {
+ } else {
  %> <a class="approved" title="Click to unapprove"
 									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">
 										Approved</a> <%
@@ -114,11 +118,13 @@
 							<%
 							}
 							}
-							} else {
+							}
+
+							if (!anyRowPrinted) {
 							%>
 
 							<tr>
-								<td colspan="5" style="text-align: center;">No vehicles
+								<td colspan="6" style="text-align: center;">No vehicles
 									found.</td>
 							</tr>
 
@@ -134,4 +140,5 @@
 	</div>
 </body>
 </html>
+
 
