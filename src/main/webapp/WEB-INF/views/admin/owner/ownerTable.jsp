@@ -44,7 +44,7 @@
 							<%
 							List<OwnerBean> ownersList = (List<OwnerBean>) request.getAttribute("owners");
 
-							if (ownersList.isEmpty()) {
+							if (!ownersList.isEmpty()) {
 								for (OwnerBean o : ownersList) {
 							%>
 							<tr id="<%="r" + o.getOwner_id()%>">
