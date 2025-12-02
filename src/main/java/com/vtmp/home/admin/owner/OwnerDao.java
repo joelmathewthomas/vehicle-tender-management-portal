@@ -45,6 +45,40 @@ public class OwnerDao {
 
 		return null;
 	}
+	
+	/**
+	 * Fetches an owner by its User ID.
+	 *
+	 * @param userId the User ID of the owner to retrieve
+	 * @return an OwnerBean if found, or null if not found
+	 * @throws SQLException if a database error occurs
+	 */
+
+	public OwnerBean getOwnerByUserId(int userId) throws SQLException {
+		String sql = "SELECT * FROM vtmp.owners WHERE user_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setInt(1, userId);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					OwnerBean owner = new OwnerBean();
+					owner.setOwner_id(rs.getInt("owner_id"));
+					owner.setUser_id(rs.getInt("user_id"));
+					owner.setFname(rs.getString("owner_fname"));
+					owner.setMname(rs.getString("owner_mname"));
+					owner.setLname(rs.getString("owner_lname"));
+					owner.setPhone(rs.getString("owner_phone"));
+					owner.setAddress(rs.getString("owner_address"));
+					owner.setAadhaar(rs.getString("owner_aadhaar"));
+					return owner;
+				}
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * Fetches all owners from the database.

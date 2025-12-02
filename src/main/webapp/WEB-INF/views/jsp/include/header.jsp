@@ -28,6 +28,15 @@ String role = (String) session.getAttribute("userrole");
 		%>
 
 		<div class="dropdown">
+			<a href="${ctxPth}/vehicle">Vehicles</a>
+			<div class="submenu">
+				<a href="${ctxPth}/vehicle/add">Add New Vehicle</a> <a
+					href="${ctxPth}/vehicle/edit">Update Vehicle Details</a> <a
+					href="${ctxPth}/vehicle/delete">Delete Vehicle</a>
+			</div>
+		</div>
+
+		<div class="dropdown">
 			<a href="#">Tenders</a>
 			<div class="submenu">
 				<a href="#">Add New Tender</a> <a href="#">Edit/Delete</a>
