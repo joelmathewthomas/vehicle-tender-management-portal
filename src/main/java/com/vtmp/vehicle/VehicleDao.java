@@ -100,4 +100,27 @@ public class VehicleDao {
 
 		return vehicles;
 	}
+
+	/**
+	 * Toggles the vehicle_status field between 'approved' and 'unapproved' for the
+	 * given vehicle ID. Performs the toggle in a single SQL UPDATE using a CASE
+	 * expression.
+	 *
+	 * @param vehicleId the ID of the vehicle to update
+	 * @return true if exactly one row was updated; false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean toggleVehicleStatus(int vehicleId) throws SQLException {
+		String sql = "UPDATE vtmp.vehicles " + "SET vehicle_status = CASE "
+				+ "    WHEN vehicle_status = 'approved' THEN 'unapproved' "
+				+ "    WHEN vehicle_status = 'unapproved' THEN 'approved' " + "    ELSE vehicle_status " + "END "
+				+ "WHERE vehicle_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setInt(1, vehicleId);
+			return pst.executeUpdate() == 1;
+		}
+	}
+
 }

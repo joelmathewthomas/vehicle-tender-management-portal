@@ -54,7 +54,7 @@
 							if (vehiclesList != null && !vehiclesList.isEmpty()) {
 								for (VehicleBean v : vehiclesList) {
 							%>
-							<tr id="<%="r" + v.getOwner_id()%>">
+							<tr id="<%="r" + v.getVehicle_id()%>">
 								<td><%=v.getVehicle_id()%></td>
 
 								<%
@@ -80,11 +80,11 @@
 									<%
 									if (v.getVehicle_status().equals("unapproved")) {
 									%> <a class="unapproved" title="Click to approve"
-									href="${ctxPth}/vehicle/edit?vid=<%= v.getVehicle_id() %>">Unapproved</a>
+									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">Unapproved</a>
 									<%
 									} else if (v.getVehicle_status().equals("approved")) {
 									%> <a class="approved" title="Click to unapprove"
-									href="${ctxPth}/vehicle/edit?vid=<%= v.getVehicle_id() %>">Approved</a>
+									href="${ctxPth}/admin/vehicle/togglestatus?vid=<%= v.getVehicle_id() %>">Approved</a>
 									<%
 									}
 									%>

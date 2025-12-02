@@ -40,4 +40,15 @@ public class VehicleService {
 		return vehicleDao.getVehicleById(vehicleId);
 	}
 
+	/**
+	 * Toggles the approval status of a vehicle.
+	 *
+	 * @param vehicleId the ID of the vehicle to toggle
+	 * @return true if the status was updated; false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean toggleVehicleStatus(int vehicleId) throws SQLException {
+		return vehicleDao.toggleVehicleStatus(vehicleId);
+	}
+
 }
