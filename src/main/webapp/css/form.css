@@ -33,13 +33,14 @@
   gap: 10px;
 }
 
-.input input {
+.input input, select {
   width: 100%;
   padding: 12px 14px;
   margin: 10px 0;
   border: 1px solid #e0dddd;
   border-radius: 8px;
   font-size: 14px;
+  background-color: white;
 }
 
 #submit input {
@@ -68,4 +69,5 @@
 .input-descriptor {
   margin-top: 14px;
   margin-left: 4px;
+  font-weight: 100;
 }
