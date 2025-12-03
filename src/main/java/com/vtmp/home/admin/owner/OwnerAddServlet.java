@@ -19,6 +19,7 @@ import com.vtmp.auth.AuthBean;
 @WebServlet("/admin/owner/add")
 public class OwnerAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final OwnerService service = new OwnerService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -37,7 +38,6 @@ public class OwnerAddServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		OwnerService service = new OwnerService();
 		List<String> errors = null;
 		AuthBean authBean = new AuthBean();
 		authBean.setUsername(request.getParameter("username"));

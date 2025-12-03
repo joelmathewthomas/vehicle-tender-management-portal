@@ -17,6 +17,7 @@ import com.vtmp.util.RequestUtil;
 @WebServlet("/admin/owner/delete")
 public class OwnerDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final OwnerService service = new OwnerService();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -32,7 +33,6 @@ public class OwnerDeleteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		OwnerService service = new OwnerService();
 		int owner_id = RequestUtil.getIntParam(request, "oid");
 		if (owner_id != 0) {
 			try {
@@ -62,9 +62,9 @@ public class OwnerDeleteServlet extends HttpServlet {
 			int ownerId = RequestUtil.getIntParam(request, "owner_id");
 
 			if (ownerId <= 0) {
-			    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			    response.getWriter().write("Invalid owner id");
-			    return;
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().write("Invalid owner id");
+				return;
 			}
 
 			if (service.deleteOwner(ownerId)) {

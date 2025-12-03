@@ -19,6 +19,7 @@ import com.vtmp.util.RequestUtil;
 @WebServlet("/admin/owner/edit")
 public class OwnerUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final OwnerService service = new OwnerService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -26,7 +27,6 @@ public class OwnerUpdateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		OwnerService service = new OwnerService();
 		int owner_id = RequestUtil.getIntParam(request, "oid");
 		if (owner_id != 0) {
 			try {

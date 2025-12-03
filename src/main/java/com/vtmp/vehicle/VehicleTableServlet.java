@@ -22,6 +22,8 @@ import com.vtmp.util.SessionUtil;
 @WebServlet("/vehicle")
 public class VehicleTableServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final VehicleService vehicleService = new VehicleService();
+	private final OwnerService ownerService = new OwnerService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -31,8 +33,6 @@ public class VehicleTableServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
-		VehicleService vehicleService = new VehicleService();
-		OwnerService ownerService = new OwnerService();
 
 		try {
 			if (Auth.checkSession(session, "owner")) {

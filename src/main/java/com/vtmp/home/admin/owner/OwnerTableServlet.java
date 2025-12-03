@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/admin/owner")
 public class OwnerTableServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final OwnerService service = new OwnerService();
 
 	/**
 	 * Handles GET requests and loads the owners list.
@@ -23,8 +24,6 @@ public class OwnerTableServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		OwnerService service = new OwnerService();
 
 		try {
 			List<OwnerBean> owners = service.getAllOwners();

@@ -17,7 +17,7 @@ import com.vtmp.util.RequestUtil;
 @WebServlet("/vehicle/delete")
 public class VehicleDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private VehicleService service = new VehicleService();
+	private final VehicleService service = new VehicleService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse

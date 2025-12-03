@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/auth")
 public class AuthServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final AuthDao dao = new AuthDao();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -26,7 +27,6 @@ public class AuthServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		AuthDao dao = new AuthDao();
 		HttpSession session = request.getSession();
 		AuthBean authBean = new AuthBean();
 		authBean.setUsername(request.getParameter("username"));
