@@ -51,4 +51,15 @@ public class VehicleService {
 		return vehicleDao.toggleVehicleStatus(vehicleId);
 	}
 
+	/**
+	 * Deletes a vehicle by its ID.
+	 *
+	 * @param vehicleId the ID of the vehicle to delete
+	 * @return true if the deletion succeeded; false otherwise
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean deleteVehicle(int vehicleId) throws SQLException {
+		return vehicleDao.deleteVehicle(vehicleId);
+	}
+
 }

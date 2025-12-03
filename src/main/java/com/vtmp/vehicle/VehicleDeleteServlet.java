@@ -1,4 +1,4 @@
-package com.vtmp.home.admin.vehicle;
+package com.vtmp.vehicle;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,15 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.util.RequestUtil;
-import com.vtmp.vehicle.VehicleService;
 
 /**
- * Servlet implementation class VehicleToggleStatusServlet
+ * Servlet implementation class VehicleDeleteServlet
  */
-@WebServlet("/admin/vehicle/togglestatus")
-public class VehicleToggleStatusServlet extends HttpServlet {
+@WebServlet("/vehicle/delete")
+public class VehicleDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final VehicleService service = new VehicleService();
+	private VehicleService service = new VehicleService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -29,20 +28,19 @@ public class VehicleToggleStatusServlet extends HttpServlet {
 		int vehicle_id = RequestUtil.getIntParam(request, "vid");
 		if (vehicle_id != 0) {
 			try {
-				if (service.toggleVehicleStatus(vehicle_id)) {
-					response.sendRedirect(request.getContextPath() + "/vehicle#r" + vehicle_id);
+				if (service.deleteVehicle(vehicle_id)) {
+					response.sendRedirect(request.getContextPath() + "/vehicle");
 					return;
 				} else {
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 					response.setContentType("text/plain");
-					response.getWriter().write("Failed to toggle vehicle status!");
+					response.getWriter().write("Failed to delete vehicle!");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.setContentType("text/plain");
-				response.getWriter().write("Failed to toggle vehicle status!");
+				response.getWriter().write("Failed to delete vehicle!");
 			}
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

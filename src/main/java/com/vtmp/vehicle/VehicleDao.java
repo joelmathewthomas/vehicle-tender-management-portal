@@ -123,4 +123,20 @@ public class VehicleDao {
 		}
 	}
 
+	/**
+	 * Deletes a vehicle record by its ID.
+	 *
+	 * @param vehicleId the ID of the vehicle to delete
+	 * @return true if exactly one record was deleted; false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean deleteVehicle(int vehicleId) throws SQLException {
+		String sql = "DELETE FROM vtmp.vehicles WHERE vehicle_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+			pst.setInt(1, vehicleId);
+			return pst.executeUpdate() == 1;
+		}
+	}
+
 }
