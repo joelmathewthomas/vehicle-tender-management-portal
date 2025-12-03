@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +100,41 @@ public class VehicleDao {
 		}
 
 		return vehicles;
+	}
+
+	/**
+	 * Inserts a new vehicle record into the database.
+	 *
+	 * @param vehicle the VehicleBean containing vehicle details
+	 * @return the generated vehicle ID, or -1 if insertion failed
+	 * @throws SQLException if a database access error occurs
+	 */
+	public int insertVehicle(VehicleBean vehicle) throws SQLException {
+		String sql = "INSERT INTO `vtmp`.`vehicles` (`owner_id`, `vehicle_no`, `vehicle_type`, `vehicle_status`) "
+				+ "VALUES (?, ?, ?, ?)";
+
+		try (Connection conn = DbDao.getConnection();
+				PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+			pst.setInt(1, vehicle.getOwner_id());
+			pst.setString(2, vehicle.getVehicle_no());
+			pst.setString(3, vehicle.getVehicle_type().toLowerCase());
+			pst.setString(4, vehicle.getVehicle_status().toLowerCase());
+
+			int rows = pst.executeUpdate();
+
+			if (rows == 0) {
+				return -1;
+			}
+
+			try (ResultSet rs = pst.getGeneratedKeys()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+		}
+
+		return -1;
 	}
 
 	/**

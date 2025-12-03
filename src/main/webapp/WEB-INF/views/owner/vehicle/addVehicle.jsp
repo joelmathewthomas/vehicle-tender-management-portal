@@ -34,8 +34,7 @@
 						<div class="input">
 							<div>
 								<input type="text" name="owner_id"
-									value="<%=request.getAttribute("owner_id")%>" readonly
-									disabled />
+									value="<%=request.getAttribute("owner_id")%>" readonly />
 							</div>
 						</div>
 					</div>
