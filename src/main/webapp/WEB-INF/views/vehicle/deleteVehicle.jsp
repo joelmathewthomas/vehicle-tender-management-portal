@@ -15,7 +15,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/content.css" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/ownerForm.css" />
+	href="${pageContext.request.contextPath}/css/form.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
 	rel="stylesheet" />
@@ -34,7 +34,7 @@
 			if (showSearchForm) {
 			%>
 
-			<div id="ownerForm">
+			<div id="form">
 				<form action="${pageContext.request.contextPath}/vehicle/delete"
 					method="GET">
 					<div class="heading">
@@ -63,7 +63,7 @@
 			VehicleBean vehicle = (VehicleBean) request.getAttribute("vehicleInfo");
 			%>
 
-			<div id="ownerForm">
+			<div id="form">
 				<form action="${pageContext.request.contextPath}/vehicle/delete"
 					method="POST">
 

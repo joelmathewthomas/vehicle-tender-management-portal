@@ -13,7 +13,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/content.css" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/ownerForm.css" />
+	href="${pageContext.request.contextPath}/css/form.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
 	rel="stylesheet" />
@@ -23,7 +23,7 @@
 	<div id="root">
 		<%@ include file="../../jsp/include/header.jsp"%>
 		<div class="content">
-			<div id="ownerForm">
+			<div id="form">
 				<form action="${pageContext.request.contextPath}/admin/owner/add"
 					method="POST">
 					<div class="heading">
