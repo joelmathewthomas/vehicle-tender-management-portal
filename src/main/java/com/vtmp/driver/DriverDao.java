@@ -58,7 +58,7 @@ public class DriverDao {
 	 */
 	public List<DriverBean> getDrivers() throws SQLException {
 		List<DriverBean> drivers = new ArrayList<>();
-		String sql = "SELECT * FROM `vtmp`.`drivers` ORDER BY driver_id DESC";
+		String sql = "SELECT * FROM `vtmp`.`drivers`";
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql);) {
 			try (ResultSet rs = pst.executeQuery()) {
@@ -83,7 +83,7 @@ public class DriverDao {
 	 */
 	public List<DriverBean> getDrivers(int ownerId) throws SQLException {
 		List<DriverBean> drivers = new ArrayList<>();
-		String sql = "SELECT * FROM `vtmp`.`drivers` WHERE owner_id = ? ORDER BY driver_id DESC";
+		String sql = "SELECT * FROM `vtmp`.`drivers` WHERE owner_id = ?";
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql);) {
 			pst.setInt(1, ownerId);
@@ -152,6 +152,22 @@ public class DriverDao {
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
+			pst.setInt(1, driverId);
+			return pst.executeUpdate() == 1;
+		}
+	}
+
+	/**
+	 * Deletes a driver record by its ID.
+	 *
+	 * @param driverId the ID of the driver to delete
+	 * @return true if exactly one record was deleted; false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean deleteDriver(int driverId) throws SQLException {
+		String sql = "DELETE FROM vtmp.drivers WHERE driver_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 			pst.setInt(1, driverId);
 			return pst.executeUpdate() == 1;
 		}

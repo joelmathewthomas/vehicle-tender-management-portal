@@ -68,6 +68,17 @@ public class DriverService {
 	public boolean toggleDriverStatus(int driverId) throws SQLException {
 		return driverDao.toggleDriverStatus(driverId);
 	}
+	
+	/**
+	 * Deletes a driver by its ID.
+	 *
+	 * @param driverId the ID of the vehicle to delete
+	 * @return true if the deletion succeeded; false otherwise
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean deleteDriver(int driverId) throws SQLException {
+		return driverDao.deleteDriver(driverId);
+	}
 
 	/**
 	 * Creates an DriverBean using form values from the request.
