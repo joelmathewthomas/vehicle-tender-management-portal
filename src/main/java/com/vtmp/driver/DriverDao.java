@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class DriverDao {
 		return drivers;
 
 	}
-	
+
 	/**
 	 * Fetches all drivers from the database by OwnerId.
 	 *
@@ -98,7 +99,42 @@ public class DriverDao {
 		return drivers;
 
 	}
-	
+
+	/**
+	 * Inserts a new driver record into the database.
+	 *
+	 * @param driverBean data for the owner to insert
+	 * @return driver_id if the insert was successful, -1 otherwise
+	 * @throws SQLException if a database error occurs
+	 */
+	public int insertDriver(DriverBean driverBean) throws SQLException {
+		String sql = "INSERT INTO `vtmp`.`drivers` (`owner_id`, `driver_fname`, `driver_mname`, `driver_lname`, `driver_phone`, `driver_address`, `driver_aadhaar`, `driver_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+		try (Connection conn = DbDao.getConnection();
+				PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+			pst.setInt(1, driverBean.getOwner_id());
+			pst.setString(2, driverBean.getFname());
+			pst.setString(3, driverBean.getMname());
+			pst.setString(4, driverBean.getLname());
+			pst.setString(5, driverBean.getPhone());
+			pst.setString(6, driverBean.getAddress());
+			pst.setString(7, driverBean.getAadhaar());
+			pst.setString(8, driverBean.getStatus());
+
+			if (pst.executeUpdate() == 0)
+				return -1;
+
+			try (ResultSet rs = pst.getGeneratedKeys()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+		}
+
+		return -1;
+	}
+
 	/**
 	 * Toggles the driver_status field between 'approved' and 'unapproved' for the
 	 * given driver ID. Performs the toggle in a single SQL UPDATE using a CASE

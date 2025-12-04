@@ -111,7 +111,7 @@ public class VehicleService {
 		List<String> errors = new ArrayList<>();
 
 		if (vehicleBean.getOwner_id() < 1) {
-			errors.add("Invalid owner ID");
+			errors.add("Invalid Owner ID");
 		}
 
 		String vehicleNoPattern = "^[A-Z]{2}\\s?\\d{1,2}\\s?[A-Z]{0,3}\\s?\\d{1,4}$";
