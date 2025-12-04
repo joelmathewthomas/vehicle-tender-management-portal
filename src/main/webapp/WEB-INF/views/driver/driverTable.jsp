@@ -60,6 +60,8 @@
 							String sParam = request.getParameter("s");
 							boolean showNormal = (sParam == null || "0".equals(sParam));
 
+							boolean anyRowPrinted = false;
+
 							if (drivers != null && !drivers.isEmpty()) {
 								for (DriverBean d : drivers) {
 
@@ -67,6 +69,7 @@
 									if (!(showNormal || showFiltered))
 								continue;
 
+									anyRowPrinted = true;
 									String name = "";
 									if (d.getFname() != null)
 								name += d.getFname() + " ";
@@ -128,6 +131,19 @@
 
 							<%
 							}
+							}
+							%>
+
+							<%
+							if (!anyRowPrinted) {
+							%>
+
+							<tr>
+								<td colspan="8" style="text-align: center;">No drivers
+									found.</td>
+							</tr>
+
+							<%
 							}
 							%>
 						</tbody>

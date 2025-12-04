@@ -98,4 +98,26 @@ public class DriverDao {
 		return drivers;
 
 	}
+	
+	/**
+	 * Toggles the driver_status field between 'approved' and 'unapproved' for the
+	 * given driver ID. Performs the toggle in a single SQL UPDATE using a CASE
+	 * expression.
+	 *
+	 * @param driverId the ID of the driver to update
+	 * @return true if exactly one row was updated; false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean toggleDriverStatus(int driverId) throws SQLException {
+		String sql = "UPDATE vtmp.drivers " + "SET driver_status = CASE "
+				+ "    WHEN driver_status = 'approved' THEN 'unapproved' "
+				+ "    WHEN driver_status = 'unapproved' THEN 'approved' " + "    ELSE driver_status " + "END "
+				+ "WHERE driver_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setInt(1, driverId);
+			return pst.executeUpdate() == 1;
+		}
+	}
 }

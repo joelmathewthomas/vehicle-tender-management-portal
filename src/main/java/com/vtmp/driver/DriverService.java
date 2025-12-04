@@ -41,4 +41,16 @@ public class DriverService {
 	public List<DriverBean> getDrivers(int ownerId) throws SQLException {
 		return driverDao.getDrivers(ownerId);
 	}
+	
+	/**
+	 * Toggles the approval status of a driver.
+	 *
+	 * @param driverId the ID of the driver to toggle
+	 * @return true if the status was updated; false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean toggleDriverStatus(int driverId) throws SQLException {
+		return driverDao.toggleDriverStatus(driverId);
+	}
+
 }
