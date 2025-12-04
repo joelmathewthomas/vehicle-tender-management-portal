@@ -52,6 +52,22 @@ String role = (String) session.getAttribute("userrole");
 					Vehicle</a>
 			</div>
 		</div>
+		
+		<div class="dropdown">
+			<a href="${ctxPth}/driver">Drivers</a>
+			<div class="submenu">
+				<%
+				if (role.equals("owner")) {
+				%>
+				<a href="${ctxPth}/owner/driver/add">Add New Driver</a>
+				<%
+				}
+				%>
+				<a <% if (role.equals("admin")) { %> href="${ctxPth}/driver?s=1">Approve
+					Drivers</a> <a <% } %> href="${ctxPth}/driver/delete">Delete
+					Driver</a>
+			</div>
+		</div>
 
 		<div class="dropdown">
 			<a href="#">Tenders</a>
