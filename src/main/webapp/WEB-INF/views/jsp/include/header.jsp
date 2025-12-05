@@ -82,6 +82,15 @@ String role = (String) session.getAttribute("userrole");
 			</div>
 		</div>
 
+		<%
+		if (role.equals("admin")) {
+		%>
+		<div class="dropdown">
+			<a href="${ctxPth}/admin/location">Locations</a>
+		</div>
+		<%
+		}
+		%>
 
 		<div class="dropdown">
 			<a href="#">Tenders</a>
