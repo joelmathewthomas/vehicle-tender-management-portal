@@ -123,9 +123,20 @@
 								}
 								%>
 
-								<td><a class="delete"
+								<td>
+									<%
+									if (role.equals("owner")) {
+									%> <a
+									href="${ctxPth}/owner/driver/edit?did=<%= d.getDriver_id() %>">
+										Edit </a>
+
+								<%
+								}
+								%>
+								<a class="delete"
 									href="${ctxPth}/driver/delete?did=<%= d.getDriver_id() %>">
-										Delete </a></td>
+									Delete </a>
+								</td>
 
 							</tr>
 

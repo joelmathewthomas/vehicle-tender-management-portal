@@ -12,8 +12,13 @@
 .table-wrapper {
 	margin-top: 20px;
 	border-radius: 12px;
-	overflow: hidden;
+	overflow: inherit;
 }
+
+.table-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 
 table {
 	width: 100%;

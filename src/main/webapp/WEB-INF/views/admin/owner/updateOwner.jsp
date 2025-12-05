@@ -66,6 +66,7 @@
 					<div class="form-section">
 						<label>User Details</label>
 						<div id="user" class="input">
+							<label class="input-descriptor">Username</label>
 							<div>
 								<input type="text" name="username" placeholder="Username"
 									value="<%=user.getUsername()%>" required minlength="3"
@@ -76,7 +77,7 @@
 						</div>
 					</div>
 					<div class="form-section">
-						<label>Name</label>
+						<label class="input-descriptor">Name</label>
 						<div id="name" class="input">
 							<div>
 								<input type="text" name="owner_id" value="<%= request.getParameter("oid") %>" required

@@ -49,7 +49,6 @@ public class OwnerUpdateServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		OwnerService service = new OwnerService();
 		List<String> errors = null;
 		OwnerBean ownerBean = service.mapRequestToOwner(request);
 		ownerBean.setOwner_id(RequestUtil.getIntParam(request, "owner_id"));
@@ -83,8 +82,6 @@ public class OwnerUpdateServlet extends HttpServlet {
 				response.getWriter().write("Username already exists.");
 			} else if (e.getMessage().contains("owner_phone")) {
 				response.getWriter().write("Phone number already exists.");
-			} else if (e.getMessage().contains("owner_aadhaar")) {
-				response.getWriter().write("Aadhaar already exists.");
 			} else {
 				response.getWriter().write("Database constraint error: " + e.getMessage());
 			}

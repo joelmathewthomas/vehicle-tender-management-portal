@@ -158,6 +158,49 @@ public class DriverDao {
 	}
 
 	/**
+	 * Updates an existing driver record in the database.
+	 *
+	 * Fields such as first name, middle name, last name, phone, and address are
+	 * updated using values from the provided DriverBean. The middle name is stored
+	 * as NULL if it is missing or empty. Driver status is also set to unapproved.
+	 *
+	 * @param driverBean contains the updated driver details and the driver_id to
+	 *                   update
+	 * @return true if exactly one row was updated, false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean updateDriver(DriverBean driverBean) throws SQLException {
+		String sql = "UPDATE `vtmp`.`drivers` SET `driver_fname` = ?, `driver_mname` = ?, `driver_lname` = ?, `driver_phone` = ?, `driver_address` = ?, `driver_status` = ? WHERE `driver_id` = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setString(1, driverBean.getFname());
+
+			if (driverBean.getMname() == null || driverBean.getMname().isEmpty()) {
+				pst.setNull(2, java.sql.Types.VARCHAR);
+			} else {
+				pst.setString(2, driverBean.getMname().trim());
+			}
+
+			pst.setString(3, driverBean.getLname());
+			pst.setString(4, driverBean.getPhone());
+			pst.setString(5, driverBean.getAddress());
+			pst.setString(6,  driverBean.getStatus());
+			pst.setInt(7, driverBean.getDriver_id());
+
+			if (pst.executeUpdate() != 1) {
+				System.out.println(false);
+				return false;
+			} else {
+				System.out.println(true);
+				return true;
+			}
+			
+//			return pst.executeUpdate() == 1;
+		}
+	}
+
+	/**
 	 * Deletes a driver record by its ID.
 	 *
 	 * @param driverId the ID of the driver to delete

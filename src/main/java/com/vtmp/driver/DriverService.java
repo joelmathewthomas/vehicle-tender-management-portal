@@ -68,7 +68,21 @@ public class DriverService {
 	public boolean toggleDriverStatus(int driverId) throws SQLException {
 		return driverDao.toggleDriverStatus(driverId);
 	}
-	
+
+	/**
+	 * Updates an existing driver record.
+	 *
+	 * This method simply delegates the update operation to the DAO layer and
+	 * returns whether the update was successful.
+	 *
+	 * @param driverBean the driver data to update, including the driver_id
+	 * @return true if the record was updated, false otherwise
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean updateDriver(DriverBean driverBean) throws SQLException {
+		return driverDao.updateDriver(driverBean);
+	}
+
 	/**
 	 * Deletes a driver by its ID.
 	 *
@@ -84,7 +98,8 @@ public class DriverService {
 	 * Creates an DriverBean using form values from the request.
 	 *
 	 * @param request incoming HTTP form request
-	 * @return DriverBean populated with request parameters
+	 * @return DriverBean populated with request parameters, null if invalid Owner
+	 *         Id
 	 */
 	public DriverBean mapRequestToDriver(HttpServletRequest request) {
 		DriverBean bean = new DriverBean();
