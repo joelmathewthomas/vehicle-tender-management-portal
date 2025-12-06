@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.vtmp.auth.AuthBean;
 import com.vtmp.auth.AuthDao;
-import com.vtmp.home.admin.owner.dto.OwnerDetails;
+import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.util.DbDao;
 
 /**

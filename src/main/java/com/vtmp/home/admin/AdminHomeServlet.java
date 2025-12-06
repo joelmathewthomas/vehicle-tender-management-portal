@@ -1,11 +1,17 @@
 package com.vtmp.home.admin;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.vtmp.tender.details.TenderDetails;
+import com.vtmp.tender.details.TenderDetailsService;
 
 /**
  * Servlet implementation class AdminHomeServlet
@@ -13,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/admin")
 public class AdminHomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final TenderDetailsService tenderDetailsService = new TenderDetailsService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -20,6 +27,16 @@ public class AdminHomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		try {
+			List<TenderDetails> tenderDetailsList = tenderDetailsService.getTenderDetailsByStatus("accept");
+			request.setAttribute("tenderDetailsList", tenderDetailsList);
+		} catch (SQLException e) {
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		response.setContentType("text/plain");
+		response.getWriter().write("INTERNAL SERVER ERROR");
+		}
+		
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminHome.jsp").forward(request, response);
 	}
 

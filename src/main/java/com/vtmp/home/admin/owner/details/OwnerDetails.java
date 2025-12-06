@@ -1,4 +1,4 @@
-package com.vtmp.home.admin.owner.dto;
+package com.vtmp.home.admin.owner.details;
 
 import com.vtmp.auth.AuthBean;
 import com.vtmp.home.admin.owner.OwnerBean;

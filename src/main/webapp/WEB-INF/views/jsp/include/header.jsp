@@ -13,11 +13,11 @@ String role = (String) session.getAttribute("userrole");
 		<%
 		if (role.equals("admin")) {
 		%>
-		<a href="${ctxPth}/admin">Home</a>
+		<a href="${ctxPth}/admin">Tenders</a>
 		<%
 		} else if (role.equals("owner")) {
 		%>
-		<a href="${ctxPth}/owner">Home</a>
+		<a href="${ctxPth}/owner">Tenders</a>
 		<%
 		}
 		%>
@@ -92,12 +92,6 @@ String role = (String) session.getAttribute("userrole");
 		}
 		%>
 
-		<div class="dropdown">
-			<a href="#">Tenders</a>
-			<div class="submenu">
-				<a href="#">Add New Tender</a> <a href="#">Edit/Delete</a>
-			</div>
-		</div>
 		<a href="${ctxPth}/auth/logout" class="logout">Logout</a>
 	</nav>
 </header>

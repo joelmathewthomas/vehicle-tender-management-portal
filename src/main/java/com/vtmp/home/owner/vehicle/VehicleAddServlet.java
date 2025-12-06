@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.home.admin.owner.OwnerService;
-import com.vtmp.home.admin.owner.dto.OwnerDetails;
+import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.util.SessionUtil;
 import com.vtmp.vehicle.VehicleBean;
 import com.vtmp.vehicle.VehicleService;

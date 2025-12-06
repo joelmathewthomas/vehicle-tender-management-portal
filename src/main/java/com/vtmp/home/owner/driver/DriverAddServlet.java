@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.vtmp.driver.DriverBean;
 import com.vtmp.driver.DriverService;
 import com.vtmp.home.admin.owner.OwnerService;
-import com.vtmp.home.admin.owner.dto.OwnerDetails;
+import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.util.SessionUtil;
 
 /**
