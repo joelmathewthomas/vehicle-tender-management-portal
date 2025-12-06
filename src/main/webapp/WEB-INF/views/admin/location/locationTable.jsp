@@ -64,7 +64,7 @@
                         name="location_name"
                         type="text"
                         placeholder="Location Name"
-                        pattern="[A-Za-z ]{2,30}"
+                        pattern="^[A-Za-z]+(?:[ .' -][A-Za-z]+)*$"
                         title="Only letters allowed."
                         required
                       />

@@ -46,7 +46,7 @@ public class LocationDao {
 	 */
 	public List<LocationBean> getLocations() throws SQLException {
 		List<LocationBean> locations = new ArrayList<>();
-		String sql = "SELECT location_id, location_name FROM vtmp.locations";
+		String sql = "SELECT location_id, location_name FROM vtmp.locations ORDER BY location_id";
 
 		try (Connection conn = DbDao.getConnection();
 				PreparedStatement pst = conn.prepareStatement(sql);
