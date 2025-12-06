@@ -47,7 +47,7 @@
                 <tr id="<%= "r" + l.getLocation_id()%>">
                   <td><%= l.getLocation_id() %></td>
                   <td><%= l.getLocation_name() %></td>
-                  <td><a class="delete">Delete</a></td>
+                  <td><a class="delete" href="${ctxPth}/admin/location/delete?lid=<%= l.getLocation_id() %>">Delete</a></td>
                 </tr>
               <% } %>
 
