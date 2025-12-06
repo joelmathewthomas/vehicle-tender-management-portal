@@ -29,22 +29,23 @@ public class AuthServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		AuthBean authBean = new AuthBean();
+		AuthBean authenticatedUser = null;
 		authBean.setUsername(request.getParameter("username"));
 		authBean.setPassword(request.getParameter("password"));
 
 		try {
-			authBean = dao.authenticate(authBean);
+			authenticatedUser = dao.authenticate(authBean);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		if (authBean != null) {
-			session.setAttribute("userid", authBean.getUser_id());
-			session.setAttribute("username", authBean.getUsername());
-			session.setAttribute("userrole", authBean.getRole());
-			if (authBean.getRole().equals("admin")) {
+		if (authenticatedUser != null) {
+			session.setAttribute("userid", authenticatedUser.getUser_id());
+			session.setAttribute("username", authenticatedUser.getUsername());
+			session.setAttribute("userrole", authenticatedUser.getRole());
+			if (authenticatedUser.getRole().equals("admin")) {
 				response.sendRedirect("admin");
-			} else if (authBean.getRole().equals("owner")) {
+			} else if (authenticatedUser.getRole().equals("owner")) {
 				response.sendRedirect("owner");
 			}
 			return;
