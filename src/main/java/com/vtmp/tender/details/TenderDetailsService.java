@@ -49,4 +49,17 @@ public class TenderDetailsService {
 	public List<TenderDetails> getTenderDetailsByStatus(String tenderStatus) throws SQLException {
 		return tenderDetailsDao.getTenderDetailsByStatus(tenderStatus);
 	}
+
+	/**
+	 * Retrieves tender details filtered by status and owner ID.
+	 *
+	 * @param tenderStatus the status to filter by
+	 * @param ownerId      the unique identifier of the owner
+	 * @return list of {@link TenderDetails}; empty if none match
+	 * @throws SQLException if a database access error occurs
+	 */
+	public List<TenderDetails> getTenderDetailsByOwnerAndStatus(String tenderStatus, int ownerId) throws SQLException {
+		return tenderDetailsDao.getTenderDetailsByOwnerAndStatus(tenderStatus, ownerId);
+	}
+
 }

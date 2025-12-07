@@ -160,4 +160,39 @@ public class TenderDetailsDao {
 		}
 		return list;
 	}
+	
+	/**
+	 * Retrieves full tender details filtered by status and owner_id.
+	 *
+	 * @param tender_status tender status to filter
+	 * @param ownerId owner id to filter
+	 * @return list of TenderDetails; empty if none match
+	 * @throws SQLException if database access fails
+	 */
+	public List<TenderDetails> getTenderDetailsByOwnerAndStatus(String tender_status, int ownerId) throws SQLException {
+		List<TenderDetails> list = new ArrayList<>();
+
+		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
+				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
+				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
+				+ "JOIN vtmp.locations l ON t.location_id = l.location_id "
+				+ "JOIN vtmp.drivers d ON t.driver_id = d.driver_id " + "WHERE t.tender_status = ? AND d.owner_id = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setString(1, tender_status);
+			pst.setInt(2, ownerId);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					TenderDetails details = new TenderDetails();
+					details.setTenderBean(mapTenderFromResultSet(rs));
+					details.setDriverBean(mapDriverFromResultSet(rs));
+					details.setLocationBean(mapLocationFromResultSet(rs));
+					list.add(details);
+				}
+			}
+		}
+		return list;
+	}
 }
