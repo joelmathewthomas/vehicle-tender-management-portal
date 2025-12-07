@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class TenderFilter
  */
-@WebFilter("/tender")
+@WebFilter("/tender/*")
 public class TenderFilter extends HttpFilter implements Filter {
 
 	private static final long serialVersionUID = 1L;

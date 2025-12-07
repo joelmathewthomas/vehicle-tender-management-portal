@@ -75,12 +75,17 @@ public class TenderDetailsDao {
 	 */
 	public TenderDetails getTenderDetailsById(int tender_id) throws SQLException {
 
-		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
-				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
-				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
-				+ "JOIN vtmp.locations l ON t.location_id = l.location_id "
-				+ "JOIN vtmp.drivers d ON t.driver_id = d.driver_id " + "WHERE t.tender_id = ?";
+		String sql = "SELECT "
+		        + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
+		        + " t.tender_fuel_rate, t.tender_salary, t.tender_status, "
+		        + " l.location_id, l.location_name, "
+		        + " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname "
+		        + "FROM vtmp.tenders t "
+		        + "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id "
+		        + "LEFT JOIN vtmp.drivers d ON t.driver_id = d.driver_id "
+		        + "WHERE t.tender_id = ?";
 
+		
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
 			pst.setInt(1, tender_id);
@@ -106,12 +111,11 @@ public class TenderDetailsDao {
 	 */
 	public List<TenderDetails> getTenderDetails() throws SQLException {
 		List<TenderDetails> list = new ArrayList<>();
-
 		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
 				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
 				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
-				+ "JOIN vtmp.locations l ON t.location_id = l.location_id "
-				+ "JOIN vtmp.drivers d ON t.driver_id = d.driver_id";
+				+ "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id "
+				+ "LEFT JOIN vtmp.drivers  d ON t.driver_id  = d.driver_id";
 
 		try (Connection conn = DbDao.getConnection();
 				PreparedStatement pst = conn.prepareStatement(sql);
@@ -138,11 +142,12 @@ public class TenderDetailsDao {
 	public List<TenderDetails> getTenderDetailsByStatus(String tender_status) throws SQLException {
 		List<TenderDetails> list = new ArrayList<>();
 
-		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
-				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
-				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
-				+ "JOIN vtmp.locations l ON t.location_id = l.location_id "
-				+ "JOIN vtmp.drivers d ON t.driver_id = d.driver_id " + "WHERE t.tender_status = ?";
+		String sql = "SELECT\n" + "    t.tender_id,\n" + "    t.vehicle_id,\n" + "    t.tender_date,\n"
+				+ "    t.tender_distance,\n" + "    t.tender_fuel_rate,\n" + "    t.tender_salary,\n"
+				+ "    t.tender_status,\n" + "    l.location_id,\n" + "    l.location_name,\n" + "    d.driver_id,\n"
+				+ "    d.driver_fname,\n" + "    d.driver_mname,\n" + "    d.driver_lname\n" + "FROM vtmp.tenders t\n"
+				+ "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id\n"
+				+ "LEFT JOIN vtmp.drivers  d ON t.driver_id  = d.driver_id\n" + "WHERE t.tender_status = ?";
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
@@ -160,12 +165,12 @@ public class TenderDetailsDao {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Retrieves full tender details filtered by status and owner_id.
 	 *
 	 * @param tender_status tender status to filter
-	 * @param ownerId owner id to filter
+	 * @param ownerId       owner id to filter
 	 * @return list of TenderDetails; empty if none match
 	 * @throws SQLException if database access fails
 	 */

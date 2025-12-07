@@ -3,6 +3,7 @@
 <%
 pageContext.setAttribute("ctxPth", request.getContextPath());
 String role = (String) session.getAttribute("userrole");
+pageContext.setAttribute("role", role);
 %>
 <header>
 	<div>
@@ -10,17 +11,13 @@ String role = (String) session.getAttribute("userrole");
 	</div>
 
 	<nav class="nav-links">
-		<%
-		if (role.equals("admin")) {
-		%>
-		<a href="${ctxPth}/admin">Tenders</a>
-		<%
-		} else if (role.equals("owner")) {
-		%>
-		<a href="${ctxPth}/owner">Tenders</a>
-		<%
-		}
-		%>
+		<div class="dropdown">
+			<a href="${ctxPth}/${role}">Tenders</a>
+			<div class="submenu">
+				<a href="${ctxPth}/tender/open">Open Tenders</a>
+			</div>
+		</div>
+
 
 		<%
 		if (role.equals("admin")) {
