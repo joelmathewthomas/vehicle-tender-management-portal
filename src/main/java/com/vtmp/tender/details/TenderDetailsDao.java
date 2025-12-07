@@ -78,7 +78,7 @@ public class TenderDetailsDao {
 
 		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
 				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
-				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
+				+ " d.driver_id, d.owner_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
 				+ "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id "
 				+ "LEFT JOIN vtmp.drivers d ON t.driver_id = d.driver_id " + "WHERE t.tender_id = ?";
 
@@ -109,7 +109,7 @@ public class TenderDetailsDao {
 		List<TenderDetails> list = new ArrayList<>();
 		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
 				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
-				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
+				+ " d.driver_id, d.owner_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
 				+ "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id "
 				+ "LEFT JOIN vtmp.drivers  d ON t.driver_id  = d.driver_id";
 
@@ -175,7 +175,7 @@ public class TenderDetailsDao {
 
 		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
 				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
-				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
+				+ " d.driver_id, d.owner_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
 				+ "JOIN vtmp.locations l ON t.location_id = l.location_id "
 				+ "JOIN vtmp.drivers d ON t.driver_id = d.driver_id " + "WHERE t.tender_status = ? AND d.owner_id = ?";
 
