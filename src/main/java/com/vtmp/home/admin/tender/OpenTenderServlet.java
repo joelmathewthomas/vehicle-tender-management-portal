@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.home.admin.location.LocationBean;
 import com.vtmp.home.admin.location.LocationService;
+import com.vtmp.tender.TenderBean;
+import com.vtmp.tender.TenderService;
 
 /**
  * Servlet implementation class OpenTenderServlet
@@ -20,6 +22,7 @@ import com.vtmp.home.admin.location.LocationService;
 @WebServlet("/admin/tender/open")
 public class OpenTenderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final TenderService tenderService = new TenderService();
 	private final LocationService locationService = new LocationService();
 
 	/**
@@ -48,9 +51,31 @@ public class OpenTenderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		TenderBean tender = tenderService.mapTenderFromRequest(request);
+
+		if (tender == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
+			response.getWriter().write("BAD REQUEST");
+			return;
+		}
+
+		try {
+			int tender_id = tenderService.insertTender(tender);
+			if (tender_id > 0) {
+				response.sendRedirect(request.getContextPath() + "/tender/open#r" + tender_id);
+			} else {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setContentType("text/plain");
+				response.getWriter().write("INTERNAL SERVER ERROR");
+			}
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setContentType("text/plain");
+			response.getWriter().write("INTERNAL SERVER ERROR");
+
+		}
+
 	}
 
 }

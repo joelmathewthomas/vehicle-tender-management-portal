@@ -26,7 +26,7 @@
 		<%@ include file="../../jsp/include/header.jsp"%>
 		<div class="content">
 			<div id="form">
-				<form action="/vtmp/vehicle/delete" method="POST">
+				<form action="${ctxPth}/admin/tender/open" method="POST">
 					<div class="heading">
 						<p>Open New Tender</p>
 					</div>
