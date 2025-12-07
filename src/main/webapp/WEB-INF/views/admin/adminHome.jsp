@@ -35,6 +35,7 @@
 						<thead>
 							<tr>
 								<th>Tender ID</th>
+								<th>Owner ID</th>
 								<th>Vehicle ID</th>
 								<th>Driver Name</th>
 								<th>Location Name</th>
@@ -66,6 +67,7 @@
 							%>
 							<tr id="r<%=tender.getTender_id()%>">
 								<td><%=tender.getTender_id()%></td>
+								<td><%=driver.getOwner_id()%></td>
 								<td><%=tender.getVehicle_id()%></td>
 								<td><%=driver_name%></td>
 								<td><%=location.getLocation_name()%></td>
@@ -82,7 +84,7 @@
 							%>
 
 							<tr>
-								<td colspan="9" style="text-align: center;">No active
+								<td colspan="10" style="text-align: center;">No active
 									tenders found.</td>
 							</tr>
 
@@ -96,5 +98,3 @@
 			</div>
 		</div>
 	</div>
-</body>
-</html>

@@ -46,6 +46,7 @@ public class TenderDetailsDao {
 	private DriverBean mapDriverFromResultSet(ResultSet rs) throws SQLException {
 		DriverBean driver = new DriverBean();
 		driver.setDriver_id(rs.getInt("driver_id"));
+		driver.setOwner_id(rs.getInt("owner_id"));
 		driver.setFname(rs.getString("driver_fname"));
 		driver.setMname(rs.getString("driver_mname"));
 		driver.setLname(rs.getString("driver_lname"));
@@ -75,17 +76,12 @@ public class TenderDetailsDao {
 	 */
 	public TenderDetails getTenderDetailsById(int tender_id) throws SQLException {
 
-		String sql = "SELECT "
-		        + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
-		        + " t.tender_fuel_rate, t.tender_salary, t.tender_status, "
-		        + " l.location_id, l.location_name, "
-		        + " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname "
-		        + "FROM vtmp.tenders t "
-		        + "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id "
-		        + "LEFT JOIN vtmp.drivers d ON t.driver_id = d.driver_id "
-		        + "WHERE t.tender_id = ?";
+		String sql = "SELECT " + " t.tender_id, t.vehicle_id, t.tender_date, t.tender_distance, "
+				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
+				+ " d.driver_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
+				+ "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id "
+				+ "LEFT JOIN vtmp.drivers d ON t.driver_id = d.driver_id " + "WHERE t.tender_id = ?";
 
-		
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
 			pst.setInt(1, tender_id);
@@ -145,8 +141,8 @@ public class TenderDetailsDao {
 		String sql = "SELECT\n" + "    t.tender_id,\n" + "    t.vehicle_id,\n" + "    t.tender_date,\n"
 				+ "    t.tender_distance,\n" + "    t.tender_fuel_rate,\n" + "    t.tender_salary,\n"
 				+ "    t.tender_status,\n" + "    l.location_id,\n" + "    l.location_name,\n" + "    d.driver_id,\n"
-				+ "    d.driver_fname,\n" + "    d.driver_mname,\n" + "    d.driver_lname\n" + "FROM vtmp.tenders t\n"
-				+ "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id\n"
+				+ "    d.driver_fname,\n" + "    d.owner_id,\n" + "    d.driver_mname,\n" + "    d.driver_lname\n"
+				+ "FROM vtmp.tenders t\n" + "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id\n"
 				+ "LEFT JOIN vtmp.drivers  d ON t.driver_id  = d.driver_id\n" + "WHERE t.tender_status = ?";
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
