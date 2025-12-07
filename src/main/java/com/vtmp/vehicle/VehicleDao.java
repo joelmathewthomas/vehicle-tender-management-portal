@@ -1,6 +1,7 @@
 package com.vtmp.vehicle;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -175,4 +176,33 @@ public class VehicleDao {
 		}
 	}
 
+	/**
+	 * Retrieves approved vehicles owned by the specified owner that are not
+	 * allocated to another accepted tender on the given date.
+	 *
+	 * @param ownerId     the owner's unique identifier
+	 * @param tender_date the date to check for conflicting allocations
+	 * @return a list of available vehicles; empty if none found
+	 * @throws SQLException if database access fails
+	 */
+	public List<VehicleBean> getFreeVehicles(int ownerId, Date tender_date) throws SQLException {
+		List<VehicleBean> vehicles = new ArrayList<>();
+		String sql = "SELECT v.*\n" + "FROM vtmp.vehicles v\n" + "WHERE v.owner_id = ?\n"
+				+ "  AND v.vehicle_status = 'approved'\n" + "  AND v.vehicle_id NOT IN (\n"
+				+ "        SELECT t.vehicle_id \n" + "        FROM vtmp.tenders t\n"
+				+ "        WHERE t.tender_date = ? AND t.tender_status = 'accept'\n" + "  )";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+			pst.setInt(1, ownerId);
+			pst.setDate(2, tender_date);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					vehicles.add(mapVehicle(rs));
+				}
+			}
+		}
+
+		return vehicles;
+	}
 }

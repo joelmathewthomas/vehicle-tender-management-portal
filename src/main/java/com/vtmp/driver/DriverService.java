@@ -1,5 +1,6 @@
 package com.vtmp.driver;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -157,6 +158,19 @@ public class DriverService {
 		}
 
 		return errors;
+	}
+
+	/**
+	 * Returns the list of approved drivers belonging to the specified owner that
+	 * are not allocated to another accepted tender on the given date.
+	 *
+	 * @param ownerId     the owner's unique identifier
+	 * @param tender_date the date to check availability for
+	 * @return list of available drivers; empty if none found
+	 * @throws SQLException if database access fails
+	 */
+	public List<DriverBean> getFreeDrivers(int ownerId, Date tender_date) throws SQLException {
+		return driverDao.getFreeDrivers(ownerId, tender_date);
 	}
 
 }

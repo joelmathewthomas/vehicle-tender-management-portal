@@ -68,7 +68,8 @@
 								<%
 								} else if (role.equals("owner")) {
 								%>
-								<td><a>Accept</a></td>
+								<td><a
+									href="${ctxPth}/owner/tender/accept?tid=<%= tender.getTender_id()%>">Accept</a></td>
 								<%
 								}
 								%>
@@ -80,8 +81,8 @@
 							%>
 
 							<tr>
-								<td colspan="9" style="text-align: center;">No open
-									tenders found.</td>
+								<td colspan="9" style="text-align: center;">No open tenders
+									found.</td>
 							</tr>
 
 							<%

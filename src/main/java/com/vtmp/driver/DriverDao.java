@@ -1,6 +1,7 @@
 package com.vtmp.driver;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -185,18 +186,10 @@ public class DriverDao {
 			pst.setString(3, driverBean.getLname());
 			pst.setString(4, driverBean.getPhone());
 			pst.setString(5, driverBean.getAddress());
-			pst.setString(6,  driverBean.getStatus());
+			pst.setString(6, driverBean.getStatus());
 			pst.setInt(7, driverBean.getDriver_id());
 
-			if (pst.executeUpdate() != 1) {
-				System.out.println(false);
-				return false;
-			} else {
-				System.out.println(true);
-				return true;
-			}
-			
-//			return pst.executeUpdate() == 1;
+			return pst.executeUpdate() == 1;
 		}
 	}
 
@@ -214,5 +207,35 @@ public class DriverDao {
 			pst.setInt(1, driverId);
 			return pst.executeUpdate() == 1;
 		}
+	}
+
+	/**
+	 * Retrieves approved drivers owned by the specified owner that are not
+	 * allocated to another accepted tender on the given date.
+	 *
+	 * @param ownerId     the owner's unique identifier
+	 * @param tender_date the date to check for conflicting allocations
+	 * @return a list of available drivers; empty if none found
+	 * @throws SQLException if database access fails
+	 */
+	public List<DriverBean> getFreeDrivers(int ownerId, Date tender_date) throws SQLException {
+		List<DriverBean> drivers = new ArrayList<>();
+		String sql = "SELECT d.*\n" + "FROM vtmp.drivers d\n" + "WHERE d.owner_id = ?\n"
+				+ "  AND d.driver_status = 'approved'\n" + "  AND d.driver_id NOT IN (\n"
+				+ "        SELECT t.driver_id\n" + "        FROM vtmp.tenders t\n"
+				+ "        WHERE t.tender_date = ? AND t.tender_status = 'accept'\n" + "  )";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+			pst.setInt(1, ownerId);
+			pst.setDate(2, tender_date);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					drivers.add(mapResultSetToDriver(rs));
+				}
+			}
+		}
+
+		return drivers;
 	}
 }

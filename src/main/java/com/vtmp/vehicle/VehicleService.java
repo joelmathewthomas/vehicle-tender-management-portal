@@ -1,5 +1,6 @@
 package com.vtmp.vehicle;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class VehicleService {
 
 		return vehicleDao.getVehicleById(vehicleId);
 	}
-	
+
 	/**
 	 * Creates a new vehicle record
 	 *
@@ -53,9 +54,8 @@ public class VehicleService {
 	 * @throws SQLException if a database access error occurs
 	 */
 	public int addVehicle(VehicleBean vehicleBean) throws SQLException {
-	    return vehicleDao.insertVehicle(vehicleBean);
+		return vehicleDao.insertVehicle(vehicleBean);
 	}
-
 
 	/**
 	 * Toggles the approval status of a vehicle.
@@ -119,8 +119,8 @@ public class VehicleService {
 			errors.add("Invalid Vehicle Number");
 		}
 
-		if (vehicleBean.getVehicle_type() == null || !(vehicleBean.getVehicle_type().equals("car")
-				|| vehicleBean.getVehicle_type().equals("bus"))) {
+		if (vehicleBean.getVehicle_type() == null
+				|| !(vehicleBean.getVehicle_type().equals("car") || vehicleBean.getVehicle_type().equals("bus"))) {
 			errors.add("Invalid Vehicle Type");
 		}
 
@@ -130,6 +130,19 @@ public class VehicleService {
 		}
 
 		return errors;
+	}
+
+	/**
+	 * Returns the list of approved vehicles belonging to the specified owner that
+	 * are not allocated to another accepted tender on the given date.
+	 *
+	 * @param ownerId     the owner's unique identifier
+	 * @param tender_date the date to check availability for
+	 * @return list of available vehicles; empty if none found
+	 * @throws SQLException if database access fails
+	 */
+	public List<VehicleBean> getFreeVehicles(int ownerId, Date tender_date) throws SQLException {
+		return vehicleDao.getFreeVehicles(ownerId, tender_date);
 	}
 
 }
