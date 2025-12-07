@@ -76,3 +76,8 @@ header {
   transform: translateY(0);
   pointer-events: auto;
 }
+
+.dropdown:nth-last-child(-n+2) .submenu {
+  left: auto;
+  right: 0;
+}
