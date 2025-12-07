@@ -36,7 +36,7 @@ public class CloseTenderServlet extends HttpServlet {
 
 		try {
 			if (tenderService.closeTender(tender_id)) {
-				response.sendRedirect(request.getContextPath() + "/owner/tender/closed#r" + tender_id);
+				response.sendRedirect(request.getContextPath() + "/tender/closed#r" + tender_id);
 				return;
 			} else {
 
