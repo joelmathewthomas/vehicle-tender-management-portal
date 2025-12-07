@@ -66,4 +66,23 @@ public class TenderDao {
 		}
 	}
 
+	/**
+	 * Marks a tender as closed in the database.
+	 *
+	 * @param tender_id ID of the tender to close
+	 * @return true if update affected one row
+	 * @throws SQLException if DB failure occurs
+	 */
+	public boolean closeTender(int tender_id) throws SQLException {
+
+		String sql = "UPDATE `vtmp`.`tenders` SET tender_status = 'closed' WHERE `tender_id` = ?";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setInt(1, tender_id);
+
+			return pst.executeUpdate() == 1;
+		}
+	}
+
 }

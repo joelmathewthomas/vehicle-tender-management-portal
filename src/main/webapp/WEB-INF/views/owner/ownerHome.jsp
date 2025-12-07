@@ -73,7 +73,9 @@
 								<td><%=tender.getTender_distance()%></td>
 								<td><%=tender.getTender_fuel_rate()%></td>
 								<td><%=tender.getTender_salary()%></td>
-								<td><a class="delete"> Delete </a></td>
+								<td><a
+									href="${ctxPth}/owner/tender/close?tid=<%= tender.getTender_id()%>">Mark
+										as completed</a></td>
 							</tr>
 							<%
 							}
@@ -82,8 +84,8 @@
 							%>
 
 							<tr>
-								<td colspan="9" style="text-align: center;">No active tenders
-									found.</td>
+								<td colspan="9" style="text-align: center;">No active
+									tenders found.</td>
 							</tr>
 
 							<%

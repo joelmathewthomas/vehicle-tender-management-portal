@@ -87,4 +87,15 @@ public class TenderService {
 		return tenderDao.acceptTender(tenderId, vehicleId, driverId);
 	}
 
+	/**
+	 * Closes a tender.
+	 *
+	 * @param tenderId ID of the tender to close
+	 * @return true if the tender was successfully closed
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean closeTender(int tenderId) throws SQLException {
+		return tenderDao.closeTender(tenderId);
+	}
+
 }
