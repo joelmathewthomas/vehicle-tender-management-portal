@@ -27,17 +27,18 @@
 		<%@ include file="../../jsp/include/header.jsp"%>
 		<div class="content">
 			<div id="form">
-				<form action="/vtmp/vehicle/delete" method="POST">
+				<form action="${ctxPth}/owner/tender/accept" method="POST">
 					<div class="heading">
 						<p>Accept Tender</p>
 					</div>
-
+					<input type="text" name="tender_id"
+						value="<%=request.getParameter("tid")%>" hidden />
 					<div class="form-section">
 						<label>Tender Details</label>
 						<div id="additional" class="input">
 							<label class="input-descriptor">Vehicle</label>
 							<div>
-								<select name="location_id" required>
+								<select name="vehicle_id" required>
 									<option value="" selected disabled>Select Vehicle</option>
 									<%
 									List<VehicleBean> vehicles = (List<VehicleBean>) request.getAttribute("vehicles");
@@ -52,7 +53,7 @@
 
 							<label class="input-descriptor">Driver</label>
 							<div>
-								<select name="location_id" required>
+								<select name="driver_id" required>
 									<option value="" selected disabled>Select Driver</option>
 									<%
 									List<DriverBean> drivers = (List<DriverBean>) request.getAttribute("drivers");

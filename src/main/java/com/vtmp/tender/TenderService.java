@@ -74,4 +74,17 @@ public class TenderService {
 		return tenderDao.insertTender(tender);
 	}
 
+	/**
+	 * Accepts a tender by assigning a vehicle and driver.
+	 *
+	 * @param tenderId  ID of the tender
+	 * @param vehicleId ID of the selected vehicle
+	 * @param driverId  ID of the selected driver
+	 * @return true if the update was successful
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean acceptTender(int tenderId, int vehicleId, int driverId) throws SQLException {
+		return tenderDao.acceptTender(tenderId, vehicleId, driverId);
+	}
+
 }

@@ -2,6 +2,7 @@ package com.vtmp.home.owner.tender;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import com.vtmp.driver.DriverBean;
 import com.vtmp.driver.DriverService;
 import com.vtmp.home.admin.owner.OwnerService;
 import com.vtmp.home.admin.owner.details.OwnerDetails;
+import com.vtmp.tender.TenderService;
 import com.vtmp.tender.details.TenderDetails;
 import com.vtmp.tender.details.TenderDetailsService;
 import com.vtmp.util.RequestUtil;
@@ -30,6 +32,7 @@ public class AcceptTenderServlet extends HttpServlet {
 	private final OwnerService ownerService = new OwnerService();
 	private final DriverService driverService = new DriverService();
 	private final VehicleService vehicleService = new VehicleService();
+	private final TenderService tenderService = new TenderService();
 	private final TenderDetailsService tenderDetailsService = new TenderDetailsService();
 
 	/**
@@ -54,7 +57,7 @@ public class AcceptTenderServlet extends HttpServlet {
 						response.getWriter().write("Invalid Tender ID");
 						return;
 					}
-					
+
 					TenderDetails tenderDetails = tenderDetailsService.getTenderDetailsById(tender_id);
 					if (tenderDetails == null) {
 						response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -62,14 +65,14 @@ public class AcceptTenderServlet extends HttpServlet {
 						response.getWriter().write("Invalid Tender ID. Tender does not exist!");
 						return;
 					}
-					
+
 					Date tender_date = tenderDetails.getTenderBean().getTender_date();
 					List<VehicleBean> vehicles = vehicleService.getFreeVehicles(ownerId, tender_date);
 					List<DriverBean> drivers = driverService.getFreeDrivers(ownerId, tender_date);
-					
+
 					request.setAttribute("vehicles", vehicles);
 					request.setAttribute("drivers", drivers);
-					
+
 				}
 			} else {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -94,6 +97,47 @@ public class AcceptTenderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		int tender_id = RequestUtil.getIntParam(request, "tender_id");
+		if (tender_id < 1) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
+			response.getWriter().write("Invalid Tender ID");
+			return;
+
+		}
+
+		int vehicle_id = RequestUtil.getIntParam(request, "vehicle_id");
+		if (vehicle_id < 1) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
+			response.getWriter().write("Invalid Tender ID");
+			return;
+
+		}
+
+		int driver_id = RequestUtil.getIntParam(request, "driver_id");
+		if (driver_id < 1) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
+			response.getWriter().write("Invalid Tender ID");
+			return;
+
+		}
+
+		try {
+			if (tenderService.acceptTender(tender_id, vehicle_id, driver_id)) {
+				response.sendRedirect(request.getContextPath() + "/owner#r" + tender_id);
+			} else {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.setContentType("text/plain");
+				response.getWriter().write("Internal Server Error");
+			}
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setContentType("text/plain");
+			response.getWriter().write("Internal Server Error");
+		}
+
 	}
 
 }

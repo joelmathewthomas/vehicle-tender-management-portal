@@ -42,4 +42,28 @@ public class TenderDao {
 
 		return -1;
 	}
+
+	/**
+	 * Accepts a tender by assigning a vehicle and driver to it.
+	 *
+	 * @param tender_id  the unique ID of the tender to be accepted
+	 * @param vehicle_id the vehicle assigned to the tender
+	 * @param driver_id  the driver assigned to the tender
+	 * @return true if the tender was successfully accepted (updated), false
+	 *         otherwise
+	 * @throws SQLException if any database error occurs during the update
+	 */
+	public boolean acceptTender(int tender_id, int vehicle_id, int driver_id) throws SQLException {
+		String sql = "UPDATE `vtmp`.`tenders` SET `driver_id` = ?, `vehicle_id` = ?, tender_status = 'accept' WHERE (`tender_id` = ?)";
+
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
+			pst.setInt(1, driver_id);
+			pst.setInt(2, vehicle_id);
+			pst.setInt(3, tender_id);
+
+			return pst.executeUpdate() == 1;
+		}
+	}
+
 }
