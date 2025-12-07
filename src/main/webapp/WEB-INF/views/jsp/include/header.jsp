@@ -14,6 +14,15 @@ pageContext.setAttribute("role", role);
 		<div class="dropdown">
 			<a href="${ctxPth}/${role}">Tenders</a>
 			<div class="submenu">
+
+				<%
+				if (role.equals("admin")) {
+				%>
+				<a href="${ctxPth}/admin/tender/open">Open New Tender</a>
+				<%
+				}
+				%>
+
 				<a href="${ctxPth}/tender/open">Open Tenders</a>
 			</div>
 		</div>
