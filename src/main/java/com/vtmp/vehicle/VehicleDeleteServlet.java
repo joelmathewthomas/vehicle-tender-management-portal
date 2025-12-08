@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 
 /**
@@ -31,9 +32,8 @@ public class VehicleDeleteServlet extends HttpServlet {
 				request.setAttribute("vehicleInfo", service.getVehicleDetails(vehicle_id));
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Internal Server Error");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Internal Server Error");
 				return;
 			}
 		}
@@ -54,20 +54,16 @@ public class VehicleDeleteServlet extends HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/vehicle");
 					return;
 				} else {
-					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-					response.setContentType("text/plain");
-					response.getWriter().write("Failed to delete vehicle!");
+					ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+							"Failed to delete vehicle!");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Failed to delete vehicle!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Failed to delete vehicle!");
 			}
 		} else {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Vehicle ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Vehicle ID");
 			return;
 		}
 	}

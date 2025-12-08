@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 import com.vtmp.vehicle.VehicleService;
 
@@ -33,21 +34,16 @@ public class VehicleToggleStatusServlet extends HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/vehicle#r" + vehicle_id);
 					return;
 				} else {
-					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-					response.setContentType("text/plain");
-					response.getWriter().write("Failed to toggle vehicle status!");
+					ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+							"Failed to toggle vehicle status!");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Failed to toggle vehicle status!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Failed to toggle vehicle status!");
 			}
 		} else {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Vehicle ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Vehicle ID");
 			return;
 		}
 	}
@@ -58,9 +54,7 @@ public class VehicleToggleStatusServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
 
 }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.home.admin.owner.OwnerService;
 import com.vtmp.home.admin.owner.details.OwnerDetails;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.SessionUtil;
 import com.vtmp.vehicle.VehicleBean;
 import com.vtmp.vehicle.VehicleService;
@@ -47,17 +48,12 @@ public class VehicleAddServlet extends HttpServlet {
 					return;
 				}
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Please logout and try again!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Please logout and try again!");
 				return;
-
 			}
 
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error");
 			e.printStackTrace();
 			return;
 		}
@@ -75,7 +71,7 @@ public class VehicleAddServlet extends HttpServlet {
 		VehicleBean vehicleBean = vehicleService.mapRequestToVehicle(request);
 
 		if (vehicleBean == null) {
-			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Owner ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Owner ID");
 			return;
 		}
 
@@ -83,7 +79,7 @@ public class VehicleAddServlet extends HttpServlet {
 		if (!errors.isEmpty()) {
 			StringBuilder msg = new StringBuilder("Invalid FormData\n");
 			errors.forEach(e -> msg.append(e).append("\n"));
-			sendError(response, HttpServletResponse.SC_BAD_REQUEST, msg.toString());
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, msg.toString());
 			return;
 		}
 
@@ -95,30 +91,20 @@ public class VehicleAddServlet extends HttpServlet {
 				return;
 			}
 
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error");
 		} catch (SQLIntegrityConstraintViolationException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
+
 			if (e.getMessage().contains("vehicle_no")) {
-				response.getWriter().write("Vehicle Number already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Vehicle Number already exists.");
 			} else {
-				response.getWriter().write("Database constraint error: " + e.getMessage());
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Database constraint error: " + e.getMessage());
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error");
 		}
-	}
-
-	/** Helper method for sending plain-text error responses */
-	private void sendError(HttpServletResponse response, int status, String message) throws IOException {
-		response.setStatus(status);
-		response.setContentType("text/plain");
-		response.getWriter().write(message);
 	}
 
 }
