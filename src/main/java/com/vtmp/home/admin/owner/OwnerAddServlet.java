@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.auth.AuthBean;
+import com.vtmp.util.ErrorUtil;
 
 /**
  * Servlet implementation class OwnerAdd
@@ -53,9 +54,7 @@ public class OwnerAddServlet extends HttpServlet {
 			for (String error : errors) {
 				messages.append(error).append("\n");
 			}
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write(messages.toString());
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, messages.toString());
 			return;
 		}
 
@@ -65,27 +64,29 @@ public class OwnerAddServlet extends HttpServlet {
 			if (owner_id != -1) {
 				response.sendRedirect(request.getContextPath() + "/admin/owner#r" + owner_id);
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Failed to create new owner!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Failed to create new owner!");
 			}
 		} catch (SQLIntegrityConstraintViolationException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
+
 			if (e.getMessage().contains("user_name")) {
-				response.getWriter().write("Username already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Username already exists.");
 			} else if (e.getMessage().contains("owner_phone")) {
-				response.getWriter().write("Phone number already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Phone number already exists.");
 			} else if (e.getMessage().contains("owner_aadhaar")) {
-				response.getWriter().write("Aadhaar already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Aadhaar already exists.");
 			} else {
-				response.getWriter().write("Database constraint error: " + e.getMessage());
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Database constraint error: " + e.getMessage());
 			}
+
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Failed to create new owner! " + e.getMessage());
 			e.printStackTrace();
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Failed to create new owner! " + e.getMessage());
 		}
 	}
 
