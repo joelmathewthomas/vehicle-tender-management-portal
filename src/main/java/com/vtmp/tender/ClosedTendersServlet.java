@@ -15,6 +15,7 @@ import com.vtmp.home.admin.owner.OwnerService;
 import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.tender.details.TenderDetails;
 import com.vtmp.tender.details.TenderDetailsService;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.SessionUtil;
 
 /**
@@ -41,9 +42,8 @@ public class ClosedTendersServlet extends HttpServlet {
 			int userId = SessionUtil.getIntParam(request, "userid");
 
 			if (userId <= 0) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Please logout and try again!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Please logout and try again!");
 				return;
 			}
 
@@ -52,16 +52,14 @@ public class ClosedTendersServlet extends HttpServlet {
 				ownerDetails = ownerService.getOwnerDetailsByUserID(userId);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("INTERNAL SERVER ERROR");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"INTERNAL SERVER ERROR");
 				return;
 			}
 
 			if (ownerDetails == null) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Owner details not found!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Owner details not found!");
 				return;
 			}
 
@@ -72,9 +70,8 @@ public class ClosedTendersServlet extends HttpServlet {
 				tenderDetailsList = tenderDetailsService.getTenderDetailsByOwnerAndStatus("closed,paid", ownerId);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("INTERNAL SERVER ERROR");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"INTERNAL SERVER ERROR");
 				return;
 			}
 
@@ -88,9 +85,8 @@ public class ClosedTendersServlet extends HttpServlet {
 				tenderDetailsList = tenderDetailsService.getTenderDetailsByStatus("closed,paid");
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("INTERNAL SERVER ERROR");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"INTERNAL SERVER ERROR");
 				return;
 			}
 
@@ -98,9 +94,7 @@ public class ClosedTendersServlet extends HttpServlet {
 		}
 
 		else {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.setContentType("text/plain");
-			response.getWriter().write("UNAUTHORIZED ACCESS");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED ACCESS");
 			return;
 		}
 
@@ -113,9 +107,7 @@ public class ClosedTendersServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		response.setContentType("text/plain");
-		response.getWriter().write("Forbidden");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_FORBIDDEN, "Forbidden");
 	}
 
 }

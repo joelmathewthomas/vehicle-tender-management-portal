@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.tender.TenderService;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 
 /**
@@ -29,9 +30,7 @@ public class TenderDeleteServlet extends HttpServlet {
 		int tender_id = RequestUtil.getIntParam(request, "tid");
 
 		if (tender_id < 1) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Tender ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Tender ID");
 			return;
 		}
 
@@ -46,15 +45,13 @@ public class TenderDeleteServlet extends HttpServlet {
 
 				return;
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Internal Server Error");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Internal Server Error");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Internal Server Error");
 		}
 	}
 
@@ -64,9 +61,7 @@ public class TenderDeleteServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		response.setContentType("text/plain");
-		response.getWriter().write("Internal Server Error");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error");
 	}
 
 }
