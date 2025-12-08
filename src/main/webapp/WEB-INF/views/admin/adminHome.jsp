@@ -75,7 +75,9 @@
 								<td><%=tender.getTender_distance()%></td>
 								<td><%=tender.getTender_fuel_rate()%></td>
 								<td><%=tender.getTender_salary()%></td>
-								<td><a class="delete"> Delete </a></td>
+								<td><a class="delete"
+									href="${ctxPth}/admin/tender/delete?tid=<%= tender.getTender_id()%>">
+										Delete </a></td>
 							</tr>
 							<%
 							}

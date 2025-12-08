@@ -85,4 +85,20 @@ public class TenderDao {
 		}
 	}
 
+	/**
+	 * Deletes a tender from the database.
+	 *
+	 * @param tender_id ID of the tender to delete
+	 * @return true if update affected one row
+	 * @throws SQLException if DB failure occurs
+	 */
+	public boolean deleteTender(int tender_id) throws SQLException {
+		String sql = "DELETE FROM `vtmp`.`tenders` WHERE tender_id = ?";
+		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql);) {
+			pst.setInt(1, tender_id);
+
+			return pst.executeUpdate() == 1;
+		}
+	}
+
 }

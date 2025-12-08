@@ -64,7 +64,8 @@
 								<%
 								if (role.equals("admin")) {
 								%>
-								<td><a class="delete">Delete</a></td>
+								<td><a class="delete"
+									href="${ctxPth}/admin/tender/delete?tid=<%= tender.getTender_id()%>">Delete</a></td>
 								<%
 								} else if (role.equals("owner")) {
 								%>

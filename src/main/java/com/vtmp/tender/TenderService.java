@@ -98,4 +98,15 @@ public class TenderService {
 		return tenderDao.closeTender(tenderId);
 	}
 
+	/**
+	 * Deletes a tender.
+	 *
+	 * @param tenderId ID of the tender to delete
+	 * @return true if the tender was successfully closed
+	 * @throws SQLException if a database error occurs
+	 */
+	public boolean deleteTender(int tender_id) throws SQLException {
+		return tenderDao.deleteTender(tender_id);
+	}
+
 }
