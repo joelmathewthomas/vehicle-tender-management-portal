@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vtmp.util.ErrorUtil;
+
 /**
  * Servlet implementation class LocationTableServlet
  */
@@ -29,9 +31,9 @@ public class LocationTableServlet extends HttpServlet {
 			request.setAttribute("locations", locations);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Failed to fetch locations!");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Failed to fetch locations!");
+			return;
 		}
 
 		request.getRequestDispatcher("/WEB-INF/views/admin/location/locationTable.jsp").forward(request, response);
@@ -43,9 +45,7 @@ public class LocationTableServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
 
 }

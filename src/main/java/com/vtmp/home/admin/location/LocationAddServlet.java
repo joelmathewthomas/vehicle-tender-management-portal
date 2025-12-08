@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vtmp.util.ErrorUtil;
+
 @WebServlet("/admin/location/add")
 public class LocationAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -15,9 +17,7 @@ public class LocationAddServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -30,9 +30,7 @@ public class LocationAddServlet extends HttpServlet {
 		}
 
 		if (location == null || location.isEmpty() || !location.matches("^[A-Za-z]+(?:[ .' -][A-Za-z]+)*$")) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Location Name");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Location Name");
 			return;
 		}
 
@@ -43,14 +41,12 @@ public class LocationAddServlet extends HttpServlet {
 				return;
 			}
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Location already exists!");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Location already exists!");
 			e.printStackTrace();
 		} catch (Exception e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("INTERNAL SERVER ERROR");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 			e.printStackTrace();
 		}
 	}

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 
 /**
@@ -29,9 +30,7 @@ public class LocationDeleteServlet extends HttpServlet {
 		int location_id = RequestUtil.getIntParam(request, "lid");
 
 		if (location_id < 1) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Location Id");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Location Id");
 			return;
 		}
 
@@ -39,15 +38,13 @@ public class LocationDeleteServlet extends HttpServlet {
 			if (service.deleteLocation(location_id)) {
 				response.sendRedirect(request.getContextPath() + "/admin/location");
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Internal Server Error");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Internal Server Error");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Internal Server Error");
 			return;
 		}
 	}
@@ -58,9 +55,7 @@ public class LocationDeleteServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
 
 }
