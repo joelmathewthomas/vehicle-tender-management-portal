@@ -22,9 +22,7 @@ public class AuthServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD NOT ALLOWED");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -53,9 +51,6 @@ public class AuthServlet extends HttpServlet {
 			}
 			return;
 		} else {
-//			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//			response.setContentType("text/plain");
-//			response.getWriter().write("Invalid Username/Password");
 			ErrorUtil.sendError(request, response, HttpServletResponse.SC_FORBIDDEN, "Invalid Username/Password!");
 			return;
 		}
