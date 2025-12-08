@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.vtmp.util.ErrorUtil;
+
 /**
  * Servlet Filter implementation class TenderFilter
  */
@@ -31,9 +33,7 @@ public class TenderFilter extends HttpFilter implements Filter {
 		HttpSession session = req.getSession(false);
 
 		if (session == null || session.getAttribute("userrole") == null) {
-			res.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			res.setContentType("text/plain");
-			res.getWriter().write("Forbidden");
+			ErrorUtil.sendError(req, res, HttpServletResponse.SC_FORBIDDEN, "Forbidden");
 			return;
 		} else {
 			chain.doFilter(request, response);

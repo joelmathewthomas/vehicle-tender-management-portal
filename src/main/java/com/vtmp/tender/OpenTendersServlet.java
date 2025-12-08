@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.tender.details.TenderDetails;
 import com.vtmp.tender.details.TenderDetailsService;
+import com.vtmp.util.ErrorUtil;
 
 /**
  * Servlet implementation class OpenTendersServlet
@@ -31,9 +32,9 @@ public class OpenTendersServlet extends HttpServlet {
 			List<TenderDetails> tenderDetailsList = tenderDetailsService.getTenderDetailsByStatus("open");
 			request.setAttribute("tenderDetailsList", tenderDetailsList);
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("INTERNAL SERVER ERROR");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
+			return;
 		}
 
 		request.getRequestDispatcher("/WEB-INF/views/tender/openTendersTable.jsp").forward(request, response);
@@ -45,9 +46,7 @@ public class OpenTendersServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
 
 }

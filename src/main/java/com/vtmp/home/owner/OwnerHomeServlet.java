@@ -15,6 +15,7 @@ import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.tender.details.TenderDetails;
 import com.vtmp.tender.details.TenderDetailsService;
 import com.vtmp.util.SessionUtil;
+import com.vtmp.util.ErrorUtil;
 
 /**
  * Servlet implementation class OwnerHomeServlet
@@ -48,17 +49,16 @@ public class OwnerHomeServlet extends HttpServlet {
 				}
 			} else {
 
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.setContentType("text/plain");
-				response.getWriter().write("Please login and try again!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST,
+						"Please login and try again!");
+				return;
 			}
 
 			request.getRequestDispatcher("/WEB-INF/views/owner/ownerHome.jsp").forward(request, response);
 
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("INTERNAL SERVER ERROR");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 			e.printStackTrace();
 			return;
 		}
@@ -70,9 +70,7 @@ public class OwnerHomeServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
 
 }

@@ -15,6 +15,7 @@ import com.vtmp.home.admin.owner.OwnerService;
 import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.payment.details.PaymentDetails;
 import com.vtmp.payment.details.PaymentDetailsService;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.SessionUtil;
 
 /**
@@ -38,9 +39,7 @@ public class PaymentTableServlet extends HttpServlet {
 			int userId = SessionUtil.getIntParam(request, "userid");
 
 			if (session == null || session.getAttribute("userrole") == null || userId <= 0) {
-				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-				response.setContentType("text/plain");
-				response.getWriter().write("Forbidden");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_FORBIDDEN, "Forbidden");
 				return;
 			}
 
@@ -67,9 +66,8 @@ public class PaymentTableServlet extends HttpServlet {
 			}
 
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Internal Server Error");
 			e.printStackTrace();
 		}
 	}
@@ -80,9 +78,7 @@ public class PaymentTableServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
 
 }

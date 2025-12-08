@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.util.Auth;
+import com.vtmp.util.ErrorUtil;
 
 /**
  * Servlet Filter implementation class AdminFilter
@@ -33,9 +34,7 @@ public class AdminFilter extends HttpFilter implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 
 		if (!Auth.checkSession(req.getSession(false), "admin")) {
-			res.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			res.setContentType("text/plain");
-			res.getWriter().write("Forbidden");
+			ErrorUtil.sendError(req, res, HttpServletResponse.SC_FORBIDDEN, "Forbidden");
 			return;
 		} else {
 			chain.doFilter(request, response);

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.vtmp.home.admin.owner.OwnerService;
 import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.util.Auth;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.SessionUtil;
 
 /**
@@ -55,9 +56,7 @@ public class DriverTableServlet extends HttpServlet {
 			}
 
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Failed to fetch vehicles!");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "INTERNAL SERVER ERROR! Failed to fetch vehicles!");
 			e.printStackTrace();
 			return;
 		}
@@ -71,9 +70,7 @@ public class DriverTableServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD NOT ALLOWED");
 	}
 
 }

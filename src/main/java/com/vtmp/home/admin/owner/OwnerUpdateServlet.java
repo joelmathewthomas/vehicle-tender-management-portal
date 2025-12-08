@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 
 /**
@@ -21,21 +22,19 @@ public class OwnerUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final OwnerService service = new OwnerService();
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		int owner_id = RequestUtil.getIntParam(request, "oid");
+
 		if (owner_id != 0) {
 			try {
 				request.setAttribute("ownerInfo", service.getOwnerDetails(owner_id));
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Internal Server Error");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Internal Server Error");
 				return;
 			}
 		}
@@ -43,13 +42,12 @@ public class OwnerUpdateServlet extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/views/admin/owner/updateOwner.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		List<String> errors = null;
+
 		OwnerBean ownerBean = service.mapRequestToOwner(request);
 		ownerBean.setOwner_id(RequestUtil.getIntParam(request, "owner_id"));
 
@@ -61,9 +59,7 @@ public class OwnerUpdateServlet extends HttpServlet {
 			for (String error : errors) {
 				messages.append(error).append("\n");
 			}
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write(messages.toString());
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, messages.toString());
 			return;
 		}
 
@@ -72,27 +68,24 @@ public class OwnerUpdateServlet extends HttpServlet {
 			if (service.updateOwner(ownerBean)) {
 				response.sendRedirect(request.getContextPath() + "/admin/owner#r" + request.getParameter("owner_id"));
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Failed to update owner details!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Failed to update owner details!");
 			}
 		} catch (SQLIntegrityConstraintViolationException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			if (e.getMessage().contains("user_name")) {
-				response.getWriter().write("Username already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Username already exists.");
 			} else if (e.getMessage().contains("owner_phone")) {
-				response.getWriter().write("Phone number already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Phone number already exists.");
 			} else {
-				response.getWriter().write("Database constraint error: " + e.getMessage());
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Database constraint error: " + e.getMessage());
 			}
-			response.setContentType("text/plain");
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-
-			response.getWriter().write("Failed to update owner details! " + e.getMessage());
 			e.printStackTrace();
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Failed to update owner details! " + e.getMessage());
 		}
-
 	}
 }

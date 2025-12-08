@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 
 /**
@@ -31,9 +32,8 @@ public class DriverDeleteServlet extends HttpServlet {
 				request.setAttribute("driverInfo", driverService.getDriverById(driver_id));
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Internal Server Error");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"INTERNAL SERVER ERROR");
 				return;
 			}
 		}
@@ -54,20 +54,17 @@ public class DriverDeleteServlet extends HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/driver");
 					return;
 				} else {
-					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-					response.setContentType("text/plain");
-					response.getWriter().write("Failed to delete driver!");
+					ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+							"INTERNAL SERVER ERROR! Failed to delete driver!");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Failed to delete driver!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"INTERNAL SERVER ERROR! Failed to delete driver!");
+
 			}
 		} else {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Driver ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Driver ID");
 			return;
 		}
 	}

@@ -15,6 +15,7 @@ import com.vtmp.home.admin.location.LocationBean;
 import com.vtmp.home.admin.location.LocationService;
 import com.vtmp.tender.TenderBean;
 import com.vtmp.tender.TenderService;
+import com.vtmp.util.ErrorUtil;
 
 /**
  * Servlet implementation class OpenTenderServlet
@@ -36,9 +37,8 @@ public class OpenTenderServlet extends HttpServlet {
 			locations = locationService.getAllLocations();
 			request.setAttribute("locations", locations);
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("INTERNAL SERVER ERROR");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 			return;
 		}
 
@@ -54,9 +54,7 @@ public class OpenTenderServlet extends HttpServlet {
 		TenderBean tender = tenderService.mapTenderFromRequest(request);
 
 		if (tender == null) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("BAD REQUEST");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "BAD REQUEST");
 			return;
 		}
 
@@ -65,15 +63,12 @@ public class OpenTenderServlet extends HttpServlet {
 			if (tender_id > 0) {
 				response.sendRedirect(request.getContextPath() + "/tender/open#r" + tender_id);
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("INTERNAL SERVER ERROR");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"INTERNAL SERVER ERROR");
 			}
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("INTERNAL SERVER ERROR");
-
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 		}
 
 	}

@@ -18,6 +18,7 @@ import com.vtmp.home.admin.owner.details.OwnerDetails;
 import com.vtmp.tender.TenderService;
 import com.vtmp.tender.details.TenderDetails;
 import com.vtmp.tender.details.TenderDetailsService;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 import com.vtmp.util.SessionUtil;
 import com.vtmp.vehicle.VehicleBean;
@@ -52,17 +53,14 @@ public class AcceptTenderServlet extends HttpServlet {
 					int ownerId = ownerDetails.getOwner().getOwner_id();
 					int tender_id = RequestUtil.getIntParam(request, "tid");
 					if (tender_id < 1) {
-						response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-						response.setContentType("text/plain");
-						response.getWriter().write("Invalid Tender ID");
+						ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Tender ID");
 						return;
 					}
 
 					TenderDetails tenderDetails = tenderDetailsService.getTenderDetailsById(tender_id);
 					if (tenderDetails == null) {
-						response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-						response.setContentType("text/plain");
-						response.getWriter().write("Invalid Tender ID. Tender does not exist!");
+						ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST,
+								"Invalid Tender ID. Tender does not exist!");
 						return;
 					}
 
@@ -75,9 +73,8 @@ public class AcceptTenderServlet extends HttpServlet {
 
 				}
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Please logout and try again!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Please logout and try again!");
 				return;
 
 			}
@@ -85,9 +82,8 @@ public class AcceptTenderServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/owner/tender/acceptTender.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("INTERNAL SERVER ERROR");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 		}
 	}
 
@@ -99,43 +95,32 @@ public class AcceptTenderServlet extends HttpServlet {
 			throws ServletException, IOException {
 		int tender_id = RequestUtil.getIntParam(request, "tender_id");
 		if (tender_id < 1) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Tender ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Tender ID");
 			return;
-
 		}
 
 		int vehicle_id = RequestUtil.getIntParam(request, "vehicle_id");
 		if (vehicle_id < 1) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Tender ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Tender ID");
 			return;
-
 		}
 
 		int driver_id = RequestUtil.getIntParam(request, "driver_id");
 		if (driver_id < 1) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Tender ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Tender ID");
 			return;
-
 		}
 
 		try {
 			if (tenderService.acceptTender(tender_id, vehicle_id, driver_id)) {
 				response.sendRedirect(request.getContextPath() + "/owner#r" + tender_id);
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Internal Server Error");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Internal Server Error");
 			}
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Internal Server Error");
 		}
 
 	}

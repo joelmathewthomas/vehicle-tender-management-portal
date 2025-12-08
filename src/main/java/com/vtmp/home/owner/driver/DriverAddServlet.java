@@ -15,6 +15,7 @@ import com.vtmp.driver.DriverBean;
 import com.vtmp.driver.DriverService;
 import com.vtmp.home.admin.owner.OwnerService;
 import com.vtmp.home.admin.owner.details.OwnerDetails;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.SessionUtil;
 
 /**
@@ -46,18 +47,16 @@ public class DriverAddServlet extends HttpServlet {
 					return;
 				}
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Please logout and try again!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST,
+						"Please logout and try again");
 				return;
 
 			}
 
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
 			e.printStackTrace();
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 			return;
 		}
 
@@ -72,7 +71,7 @@ public class DriverAddServlet extends HttpServlet {
 		DriverBean driverBean = driverService.mapRequestToDriver(request);
 
 		if (driverBean == null) {
-			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Owner ID");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Owner ID");
 			return;
 		}
 
@@ -80,7 +79,7 @@ public class DriverAddServlet extends HttpServlet {
 		if (!errors.isEmpty()) {
 			StringBuilder msg = new StringBuilder("Invalid FormData\n");
 			errors.forEach(e -> msg.append(e).append("\n"));
-			sendError(response, HttpServletResponse.SC_BAD_REQUEST, msg.toString());
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, msg.toString());
 			return;
 		}
 
@@ -92,33 +91,24 @@ public class DriverAddServlet extends HttpServlet {
 				return;
 			}
 
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 		} catch (SQLIntegrityConstraintViolationException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
 			if (e.getMessage().contains("driver_phone")) {
-				response.getWriter().write("Phone number already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Phone number already exists");
 			} else if (e.getMessage().contains("driver_aadhaar")) {
-				response.getWriter().write("Aadhaar already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Aadhaar already exists");
 			} else {
-				response.getWriter().write("Database constraint error: " + e.getMessage());
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
 		}
 
-	}
-
-	/** Helper method for sending plain-text error responses */
-	private void sendError(HttpServletResponse response, int status, String message) throws IOException {
-		response.setStatus(status);
-		response.setContentType("text/plain");
-		response.getWriter().write(message);
 	}
 
 }

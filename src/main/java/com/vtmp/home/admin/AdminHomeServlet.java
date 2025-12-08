@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.vtmp.tender.details.TenderDetails;
 import com.vtmp.tender.details.TenderDetailsService;
+import com.vtmp.util.ErrorUtil;
 
 /**
  * Servlet implementation class AdminHomeServlet
@@ -21,34 +22,25 @@ public class AdminHomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final TenderDetailsService tenderDetailsService = new TenderDetailsService();
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		try {
 			List<TenderDetails> tenderDetailsList = tenderDetailsService.getTenderDetailsByStatus("accept");
 			request.setAttribute("tenderDetailsList", tenderDetailsList);
 		} catch (SQLException e) {
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		response.setContentType("text/plain");
-		response.getWriter().write("INTERNAL SERVER ERROR");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"INTERNAL SERVER ERROR");
+			return;
 		}
-		
+
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminHome.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
-
 }

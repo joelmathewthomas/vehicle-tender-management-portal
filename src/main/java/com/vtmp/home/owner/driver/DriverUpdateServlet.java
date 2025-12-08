@@ -15,6 +15,7 @@ import com.vtmp.driver.DriverBean;
 import com.vtmp.driver.DriverService;
 import com.vtmp.home.admin.owner.OwnerService;
 import com.vtmp.home.admin.owner.details.OwnerDetails;
+import com.vtmp.util.ErrorUtil;
 import com.vtmp.util.RequestUtil;
 import com.vtmp.util.SessionUtil;
 
@@ -40,27 +41,23 @@ public class DriverUpdateServlet extends HttpServlet {
 				request.setAttribute("driverInfo", driverService.getDriverById(driverId));
 			} catch (SQLException e) {
 				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Internal Server Error");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Internal Server Error");
 				return;
 			}
 		}
 
 		int userId = SessionUtil.getIntParam(request, "userid");
 		if (userId <= 0) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			response.setContentType("text/plain");
-			response.getWriter().write("Please logout and try again!");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_FORBIDDEN, "Please logout and try again!");
 			return;
 		}
 
 		try {
 			OwnerDetails ownerDetails = ownerService.getOwnerDetailsByUserID(userId);
 			if (ownerDetails == null) {
-				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-				response.setContentType("text/plain");
-				response.getWriter().write("Permission denied (no owner details found)");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_FORBIDDEN,
+						"Permission denied (no owner details found)");
 				return;
 			}
 
@@ -70,9 +67,8 @@ public class DriverUpdateServlet extends HttpServlet {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-			response.getWriter().write("Internal Server Error");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Internal Server Error");
 		}
 	}
 
@@ -85,16 +81,13 @@ public class DriverUpdateServlet extends HttpServlet {
 		List<String> errors = null;
 		DriverBean driverBean = driverService.mapRequestToDriver(request);
 		if (driverBean == null) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			response.setContentType("text/plain");
-			response.getWriter().write("Please logout and try again!");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_FORBIDDEN, "Please logout and try again!");
+			return;
 		}
 
 		int driver_id = RequestUtil.getIntParam(request, "driver_id");
 		if (driver_id < 0) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write("Invalid Driver Id");
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Driver Id");
 			return;
 		}
 
@@ -108,9 +101,7 @@ public class DriverUpdateServlet extends HttpServlet {
 			for (String error : errors) {
 				messages.append(error).append("\n");
 			}
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.setContentType("text/plain");
-			response.getWriter().write(messages.toString());
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_BAD_REQUEST, messages.toString());
 			return;
 		}
 
@@ -119,24 +110,21 @@ public class DriverUpdateServlet extends HttpServlet {
 			if (driverService.updateDriver(driverBean)) {
 				response.sendRedirect(request.getContextPath() + "/driver#r" + request.getParameter("driver_id"));
 			} else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.setContentType("text/plain");
-				response.getWriter().write("Failed to update driver details!");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Failed to update driver details!");
 			}
 		} catch (SQLIntegrityConstraintViolationException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			if (e.getMessage().contains("driver_phone")) {
-				response.getWriter().write("Phone number already exists.");
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Phone number already exists.");
 			} else {
-				response.getWriter().write("Database constraint error: " + e.getMessage());
+				ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Database constraint error: " + e.getMessage());
 			}
-			response.setContentType("text/plain");
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.setContentType("text/plain");
-
-			response.getWriter().write("Failed to update driver details! " + e.getMessage());
 			e.printStackTrace();
+			ErrorUtil.sendError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Failed to update driver details! " + e.getMessage());
 		}
 
 	}
