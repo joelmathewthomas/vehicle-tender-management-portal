@@ -69,7 +69,7 @@ public class ClosedTendersServlet extends HttpServlet {
 
 			List<TenderDetails> tenderDetailsList;
 			try {
-				tenderDetailsList = tenderDetailsService.getTenderDetailsByOwnerAndStatus("closed", ownerId);
+				tenderDetailsList = tenderDetailsService.getTenderDetailsByOwnerAndStatus("closed,paid", ownerId);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -85,7 +85,7 @@ public class ClosedTendersServlet extends HttpServlet {
 
 			List<TenderDetails> tenderDetailsList;
 			try {
-				tenderDetailsList = tenderDetailsService.getTenderDetailsByStatus("closed");
+				tenderDetailsList = tenderDetailsService.getTenderDetailsByStatus("closed,paid");
 			} catch (SQLException e) {
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -12,7 +12,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-<title>Home</title>
+<title>Closed Tenders</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/header.css" />
 <link rel="stylesheet"
@@ -29,7 +29,7 @@
 		<%@ include file="../jsp/include/header.jsp"%>
 		<div class="content top">
 			<div class="table-container">
-				<h2>Active Tenders</h2>
+				<h2>Closed Tenders</h2>
 				<div class="table-wrapper">
 					<table>
 						<thead>
@@ -53,6 +53,10 @@
 								if (role.equals("admin")) {
 								%>
 								<th>Actions</th>
+								<%
+								} else if (role.equals("owner")) {
+								%>
+								<th>Status</th>
 								<%
 								}
 								%>
@@ -95,11 +99,28 @@
 								<td><%=tender.getTender_salary()%></td>
 								<%
 								if (role.equals("admin")) {
+									if (tender.getTender_status().equals("closed")) {
 								%>
 								<td><a
 									href="${ctxPth}/admin/tender/pay?tid=<%= tender.getTender_id()%>">Process
 										Payment</a></td>
+
 								<%
+								} else if (tender.getTender_status().equals("paid")) {
+								%>
+								<td>Payment Successful</td>
+								<%
+								}
+								} else if (role.equals("owner")) {
+								if (tender.getTender_status().equals("closed")) {
+								%>
+								<td>Unpaid</td>
+								<%
+								} else if (tender.getTender_status().equals("paid")) {
+								%>
+								<td>Paid</td>
+								<%
+								}
 								}
 								%>
 							</tr>

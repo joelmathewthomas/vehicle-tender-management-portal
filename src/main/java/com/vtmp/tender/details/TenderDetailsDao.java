@@ -129,12 +129,14 @@ public class TenderDetailsDao {
 	}
 
 	/**
-	 * Retrieves full tender details filtered by status.
+	 * Returns tender details filtered by status. Supports multiple statuses if
+	 * comma-separated (e.g., "OPEN,CLOSED").
 	 *
-	 * @param tender_status tender status to filter
-	 * @return list of TenderDetails; empty if none match
-	 * @throws SQLException if database access fails
+	 * @param tender_status status value or comma-separated values
+	 * @return matching TenderDetails
+	 * @throws SQLException on database error
 	 */
+
 	public List<TenderDetails> getTenderDetailsByStatus(String tender_status) throws SQLException {
 		List<TenderDetails> list = new ArrayList<>();
 
@@ -143,7 +145,13 @@ public class TenderDetailsDao {
 				+ "    t.tender_status,\n" + "    l.location_id,\n" + "    l.location_name,\n" + "    d.driver_id,\n"
 				+ "    d.driver_fname,\n" + "    d.owner_id,\n" + "    d.driver_mname,\n" + "    d.driver_lname\n"
 				+ "FROM vtmp.tenders t\n" + "LEFT JOIN vtmp.locations l ON t.location_id = l.location_id\n"
-				+ "LEFT JOIN vtmp.drivers  d ON t.driver_id  = d.driver_id\n" + "WHERE t.tender_status = ?";
+				+ "LEFT JOIN vtmp.drivers  d ON t.driver_id  = d.driver_id\n";
+
+		if (tender_status.contains(",")) {
+			sql += " WHERE FIND_IN_SET(t.tender_status, ?)";
+		} else {
+			sql += " WHERE t.tender_status = ?";
+		}
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
@@ -163,13 +171,15 @@ public class TenderDetailsDao {
 	}
 
 	/**
-	 * Retrieves full tender details filtered by status and owner_id.
+	 * Returns tender details filtered by owner and status. Supports multiple
+	 * statuses if comma-separated (e.g., "OPEN,CLOSED").
 	 *
-	 * @param tender_status tender status to filter
-	 * @param ownerId       owner id to filter
-	 * @return list of TenderDetails; empty if none match
-	 * @throws SQLException if database access fails
+	 * @param tender_status status value or comma-separated values
+	 * @param ownerId       owner to filter
+	 * @return matching TenderDetails
+	 * @throws SQLException on database error
 	 */
+
 	public List<TenderDetails> getTenderDetailsByOwnerAndStatus(String tender_status, int ownerId) throws SQLException {
 		List<TenderDetails> list = new ArrayList<>();
 
@@ -177,11 +187,18 @@ public class TenderDetailsDao {
 				+ " t.tender_fuel_rate, t.tender_salary, t.tender_status, " + " l.location_id, l.location_name, "
 				+ " d.driver_id, d.owner_id, d.driver_fname, d.driver_mname, d.driver_lname " + "FROM vtmp.tenders t "
 				+ "JOIN vtmp.locations l ON t.location_id = l.location_id "
-				+ "JOIN vtmp.drivers d ON t.driver_id = d.driver_id " + "WHERE t.tender_status = ? AND d.owner_id = ?";
+				+ "JOIN vtmp.drivers d ON t.driver_id = d.driver_id ";
+
+		if (tender_status.contains(",")) {
+			sql += "WHERE FIND_IN_SET(t.tender_status, ?) AND d.owner_id = ?";
+		} else {
+			sql += "WHERE t.tender_status = ? AND d.owner_id = ?";
+		}
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
 			pst.setString(1, tender_status);
+
 			pst.setInt(2, ownerId);
 
 			try (ResultSet rs = pst.executeQuery()) {
@@ -196,4 +213,5 @@ public class TenderDetailsDao {
 		}
 		return list;
 	}
+
 }
