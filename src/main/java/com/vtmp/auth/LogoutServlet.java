@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.vtmp.util.ErrorUtil;
+
 /**
  * Servlet implementation class LogoutServlet
  */
@@ -26,7 +28,6 @@ public class LogoutServlet extends HttpServlet {
 		if (session != null) {
 			session.invalidate();
 		}
-
 		response.sendRedirect(request.getContextPath());
 	}
 
@@ -36,9 +37,6 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		response.setContentType("text/plain");
-		response.getWriter().write("METHOD_NOT_ALLOWED");
+		ErrorUtil.sendError(request, response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED");
 	}
-
 }
