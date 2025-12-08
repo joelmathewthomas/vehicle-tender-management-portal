@@ -25,6 +25,7 @@ pageContext.setAttribute("role", role);
 
 				<a href="${ctxPth}/tender/open">Open Tenders</a>
 				<a href="${ctxPth}/tender/closed">Closed Tenders</a>
+				<a href="${ctxPth}/payment">Payments</a>
 			</div>
 		</div>
 

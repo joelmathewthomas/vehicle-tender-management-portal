@@ -82,7 +82,7 @@
 							%>
 
 							<tr>
-								<td colspan="9" style="text-align: center;">No open tenders
+								<td colspan="7" style="text-align: center;">No open tenders
 									found.</td>
 							</tr>
 

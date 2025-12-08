@@ -23,11 +23,19 @@
 table {
 	width: 100%;
 	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+@media (max-width: 1200px) {
+    table {
+        table-layout: auto;
+    }
 }
 
 th, td {
 	padding: 14px;
 	border-bottom: 1px solid #e0e0e0;
+	text-align: center;
 }
 
 thead {
