@@ -101,4 +101,22 @@ public class TenderDao {
 		}
 	}
 
+	/**
+	 * Marks a tender as paid only if it is currently closed.
+	 *
+	 * @param conn      the active database connection
+	 * @param tender_id the ID of the tender to update
+	 * @return true if the tender status was successfully updated to paid
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean payTender(Connection conn, int tender_id) throws SQLException {
+		String sql = "UPDATE vtmp.tenders " + "SET tender_status = 'paid' "
+				+ "WHERE tender_id = ? AND tender_status = 'closed'";
+
+		try (PreparedStatement pst = conn.prepareStatement(sql)) {
+			pst.setInt(1, tender_id);
+			return pst.executeUpdate() == 1;
+		}
+	}
+
 }

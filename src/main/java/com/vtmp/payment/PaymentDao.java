@@ -6,22 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.vtmp.util.DbDao;
-
 public class PaymentDao {
 
 	/**
-	 * Inserts a new payment record and returns the generated payment ID.
+	 * Inserts a payment record using the provided connection.
 	 *
-	 * @param payment the payment bean containing tender ID and amount
-	 * @return generated payment ID, or -1 if the insert fails
+	 * @param conn    the database connection to use
+	 * @param payment the payment data containing tender ID and amount
+	 * @return the generated payment ID, or -1 if insertion failed
 	 * @throws SQLException if a database access error occurs
 	 */
-	public int insertPayment(PaymentBean payment) throws SQLException {
+	public int insertPayment(Connection conn, PaymentBean payment) throws SQLException {
 		String sql = "INSERT INTO `vtmp`.`payments` (`tender_id`, `payment_amount`) VALUES (?, ?)";
 
-		try (Connection conn = DbDao.getConnection();
-				PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+		try (PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 			pst.setInt(1, payment.getTender_id());
 			pst.setFloat(2, payment.getPayment_amount());
 
