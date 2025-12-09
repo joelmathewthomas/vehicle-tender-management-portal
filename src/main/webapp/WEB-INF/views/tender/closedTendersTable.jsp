@@ -131,8 +131,19 @@
 							%>
 
 							<tr>
+								<%
+								if (role.equals("admin")) {
+								%>
 								<td colspan="10" style="text-align: center;">No active
 									tenders found.</td>
+								<%
+								} else if (role.equals("owner")) {
+								%>
+								<td colspan="9" style="text-align: center;">No active
+									tenders found.</td>
+								<%
+								}
+								%>
 							</tr>
 
 							<%

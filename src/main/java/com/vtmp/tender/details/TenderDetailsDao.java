@@ -153,6 +153,8 @@ public class TenderDetailsDao {
 			sql += " WHERE t.tender_status = ?";
 		}
 
+		sql += " ORDER BY t.tender_id";
+
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
 			pst.setString(1, tender_status);
@@ -194,6 +196,8 @@ public class TenderDetailsDao {
 		} else {
 			sql += "WHERE t.tender_status = ? AND d.owner_id = ?";
 		}
+
+		sql += " ORDER BY t.tender_id";
 
 		try (Connection conn = DbDao.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
 

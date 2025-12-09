@@ -50,7 +50,7 @@ public class PaymentDetailsDao {
                 "SELECT p.payment_id, p.tender_id, p.payment_amount, d.owner_id " +
                 "FROM payments p " +
                 "JOIN tenders t ON p.tender_id = t.tender_id " +
-                "JOIN drivers d ON t.driver_id = d.driver_id";
+                "JOIN drivers d ON t.driver_id = d.driver_id ORDER BY p.payment_id";
 
         try (Connection conn = DbDao.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql);
@@ -77,7 +77,7 @@ public class PaymentDetailsDao {
                 "FROM payments p " +
                 "JOIN tenders t ON p.tender_id = t.tender_id " +
                 "JOIN drivers d ON t.driver_id = d.driver_id " +
-                "WHERE d.owner_id = ?";
+                "WHERE d.owner_id = ? ORDER BY p.payment_id";
 
         try (Connection conn = DbDao.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
